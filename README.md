@@ -1,2 +1,2 @@
-# sdcca
-Simple DC Circuit Analyzer
+# ocira
+Open Circuit Analyzer
