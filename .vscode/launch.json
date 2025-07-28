@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
     {
-        "name": "(gdb) SDCCA Launch",
+        "name": "(gdb) OCIRA Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/build/App/sdcca",
+        "program": "${workspaceFolder}/build/App/ocira",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",

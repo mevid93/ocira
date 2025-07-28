@@ -1,0 +1,14 @@
+{
+    "[cpp]": {
+        "editor.defaultFormatter": "xaver.clang-format"
+    },
+    "clang-format.executable": "/usr/bin/clang-format",
+    "clang-format.style": "file",
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        100
+    ],
+    "workbench.colorCustomizations": {
+        "editorRuler.foreground": "#ff4081"
+    }
+}

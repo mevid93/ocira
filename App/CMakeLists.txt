@@ -8,5 +8,5 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SFML)
 
-add_executable(sdcca src/main.cpp)
-target_link_libraries(sdcca PRIVATE sfml-graphics sfml-window sfml-system)
+add_executable(ocira src/main.cpp)
+target_link_libraries(ocira PRIVATE sfml-graphics sfml-window sfml-system)
