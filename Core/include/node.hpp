@@ -5,19 +5,23 @@
 #include <vector>
 
 namespace ocira::core {
-/// @brief Node class. Juntions in circuit graph.
+/// @brief Node class. These are juntions in a circuit graph.
 class Node {
 public:
   /// @brief Constructor.
   /// @param id Node id.
   Node(uint32_t id);
 
+  /// @brief Returns Node id.
+  /// @return Node id.
+  uint32_t getId() const;
+
   /// @brief Connect a new component to node.
-  /// @param component
+  /// @param component component to connect.
   void connectComponent(std::shared_ptr<Component> component);
 
   /// @brief Disconnet a component from node.
-  /// @param component
+  /// @param component component to diconnect.
   void disconnectComponent(std::shared_ptr<Component> component);
 
   /// @brief Get all components.

@@ -3,6 +3,8 @@
 namespace ocira::core {
 Node::Node(uint32_t id) : id(id) {}
 
+uint32_t Node::getId() const { return this->id; }
+
 void Node::connectComponent(std::shared_ptr<Component> component) {
   // TODO: IMPLEMENT ME
 }
