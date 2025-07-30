@@ -15,6 +15,7 @@ enum class ComponentType {
   IMPEDANCE,
   INDUCTOR,
   RESISTOR,
+  UNDEFINED,
   WIRE
 };
 
@@ -23,15 +24,33 @@ class Component {
 public:
   /// @brief Constructor.
   /// @param id Component id.
-  Component(uint32_t id);
+  explicit Component(uint32_t id);
+
+  /// @brief Destructor.
+  ~Component();
+
+  /// @brief Returns component id.
+  /// @return Component id.
+  uint32_t getId() const;
+
+  /// @brief Returns component type.
+  /// @return Component type.
+  ComponentType getComponentType() const;
 
   /// @brief Connect first node to component.
-  /// @param node1 node to connect.
-  void connectToFirstNode(std::weak_ptr<Node> node1);
+  /// @param node1 Node to connect.
+  /// @return True if node was connected. False otherwise.
+  bool connectFirstNode(std::weak_ptr<Node> node1);
 
   /// @brief Connect second node to component.
-  /// @param node2 node to connect.
-  void connectToSecondNode(std::weak_ptr<Node> node2);
+  /// @param node2 Node to connect.
+  /// @return True if node was connected. False otherwise.
+  bool connectSecondNode(std::weak_ptr<Node> node2);
+
+  /// @brief Disconnect node from component.
+  /// @param node Node to disconnect.
+  /// @return True if node was disconnected. False otherwise.
+  bool disconnectNode(std::weak_ptr<Node> node);
 
 private:
   uint32_t id;

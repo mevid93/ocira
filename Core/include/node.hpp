@@ -10,7 +10,10 @@ class Node {
 public:
   /// @brief Constructor.
   /// @param id Node id.
-  Node(uint32_t id);
+  explicit Node(uint32_t id);
+
+  /// @brief Destructor.
+  ~Node();
 
   /// @brief Returns Node id.
   /// @return Node id.
@@ -18,11 +21,13 @@ public:
 
   /// @brief Connect a new component to node.
   /// @param component component to connect.
-  void connectComponent(std::shared_ptr<Component> component);
+  /// @return True if component was connected. False otherwise.
+  bool connectComponent(std::shared_ptr<Component> component);
 
   /// @brief Disconnet a component from node.
   /// @param component component to diconnect.
-  void disconnectComponent(std::shared_ptr<Component> component);
+  /// @return True if component was disconnected. False otherwise.
+  bool disconnectComponent(std::shared_ptr<Component> component);
 
   /// @brief Get all components.
   /// @return Const reference to component vector.
