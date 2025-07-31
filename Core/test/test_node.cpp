@@ -71,3 +71,19 @@ TEST(node, disconnect_component_that_is_not_connected) {
   // Verify that component was disconnected.
   EXPECT_FALSE(disconnect);
 }
+
+// Test whether node is connected to component or not.
+TEST(node, is_connected_to_component) {
+  // Create new Node object.
+  Node node(1);
+  // Create new component object.
+  auto component = std::make_shared<Component>(1);
+  // Check if component is connected.
+  bool isConnected = node.isConnectedToComponent(component);
+  EXPECT_FALSE(isConnected);
+  // Connect component to node.
+  node.connectComponent(component);
+  // Check if component is connected.
+  isConnected = node.isConnectedToComponent(component);
+  EXPECT_TRUE(isConnected);
+}

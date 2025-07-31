@@ -38,19 +38,24 @@ public:
   ComponentType getComponentType() const;
 
   /// @brief Connect first node to component.
-  /// @param node1 Node to connect.
+  /// @param node Node to connect.
   /// @return True if node was connected. False otherwise.
-  bool connectFirstNode(std::weak_ptr<Node> node1);
+  bool connectFirstNode(std::weak_ptr<Node> node);
 
   /// @brief Connect second node to component.
-  /// @param node2 Node to connect.
+  /// @param node Node to connect.
   /// @return True if node was connected. False otherwise.
-  bool connectSecondNode(std::weak_ptr<Node> node2);
+  bool connectSecondNode(std::weak_ptr<Node> node);
 
   /// @brief Disconnect node from component.
   /// @param node Node to disconnect.
   /// @return True if node was disconnected. False otherwise.
   bool disconnectNode(std::weak_ptr<Node> node);
+
+  /// @brief Check if component is connected to node.
+  /// @param node Node to check.
+  /// @return True if component is connected to Node. False otherwise.
+  bool isConnectedToNode(std::weak_ptr<Node> node) const;
 
 private:
   uint32_t id;

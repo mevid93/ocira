@@ -33,6 +33,11 @@ public:
   /// @return Const reference to component vector.
   const std::vector<std::shared_ptr<Component>> &getComponents() const;
 
+  /// @brief Check if node is connected to component.
+  /// @param component Component to check.
+  /// @return True if node is connected to component. False otherwise.
+  bool isConnectedToComponent(std::shared_ptr<Component> component) const;
+
 private:
   uint32_t id;
   std::vector<std::shared_ptr<Component>> components;

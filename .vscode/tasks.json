@@ -13,6 +13,16 @@
                 "-DBUILD_TESTING=ON"
             ],
             "group": "build"
+        },
+        {
+            "label": "Valgrind: Run core tests",
+            "type": "shell",
+            "command": "valgrind",
+            "args": [
+                "--leak-check=full",
+                "${workspaceFolder}/build/Core/core_tests"
+            ],
+            "group": "none"
         }
     ]
 }
