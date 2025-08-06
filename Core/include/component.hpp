@@ -9,8 +9,10 @@ class Node;
 
 /// @brief Supported circuit component types.
 enum class ComponentType {
+  AC_CURRENT_SOURCE,
   AC_VOLTAGE_SOURCE,
   CAPACITOR,
+  DC_CURRENT_SOURCE,
   DC_VOLTAGE_SOURCE,
   IMPEDANCE,
   INDUCTOR,
@@ -57,9 +59,11 @@ public:
   /// @return True if component is connected to Node. False otherwise.
   bool isConnectedToNode(std::weak_ptr<Node> node) const;
 
+protected:
+  ComponentType type;
+
 private:
   uint32_t id;
-  ComponentType type;
   std::weak_ptr<Node> node1;
   std::weak_ptr<Node> node2;
 };
