@@ -60,12 +60,12 @@ public:
   bool isConnectedToNode(std::weak_ptr<Node> node) const;
 
 protected:
-  ComponentType type;
+  ComponentType m_type;
 
 private:
-  uint32_t id;
-  std::weak_ptr<Node> node1;
-  std::weak_ptr<Node> node2;
+  uint32_t m_id;
+  std::weak_ptr<Node> m_node1;
+  std::weak_ptr<Node> m_node2;
 };
 } // namespace ocira::core
 

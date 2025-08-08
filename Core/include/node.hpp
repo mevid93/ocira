@@ -39,8 +39,8 @@ public:
   bool isConnectedToComponent(std::shared_ptr<Component> component) const;
 
 private:
-  uint32_t id;
-  std::vector<std::shared_ptr<Component>> components;
+  uint32_t m_id;
+  std::vector<std::shared_ptr<Component>> m_components;
 };
 } // namespace ocira::core
 

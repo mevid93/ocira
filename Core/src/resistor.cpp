@@ -2,14 +2,14 @@
 
 namespace ocira::core {
 Resistor::Resistor(uint32_t id, uint32_t resistance) : Component(id) {
-  this->type = ComponentType::RESISTOR;
-  this->resistance = resistance;
+  this->m_type = ComponentType::RESISTOR;
+  this->m_resistance = resistance;
 }
 
 Resistor::~Resistor(){};
 
-uint32_t Resistor::getResistance() const { return this->resistance; }
+uint32_t Resistor::getResistance() const { return this->m_resistance; }
 
-void Resistor::setResistance(uint32_t resistance) { this->resistance = resistance; }
+void Resistor::setResistance(uint32_t resistance) { this->m_resistance = resistance; }
 
 } // namespace ocira::core

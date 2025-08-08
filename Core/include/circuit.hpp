@@ -28,8 +28,8 @@ public:
   void setComponents(std::vector<std::shared_ptr<Component>> components);
 
 private:
-  std::vector<std::shared_ptr<Node>> nodes;
-  std::vector<std::shared_ptr<Component>> components;
+  std::vector<std::shared_ptr<Node>> m_nodes;
+  std::vector<std::shared_ptr<Component>> m_components;
 };
 } // namespace ocira::core
 

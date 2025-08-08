@@ -24,7 +24,7 @@ public:
   void setResistance(uint32_t resistance);
 
 private:
-  uint32_t resistance;
+  uint32_t m_resistance;
 };
 } // namespace ocira::core
 
