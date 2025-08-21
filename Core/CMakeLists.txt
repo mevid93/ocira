@@ -7,6 +7,9 @@ add_library(ocira_core "${CORE_SRC_FILES}")
 
 target_include_directories(ocira_core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
+target_include_directories(ocira_core PRIVATE ${armadillo_SOURCE_DIR}/include)
+target_link_libraries(ocira_core PRIVATE armadillo)
+
 
 #----------------------------------------------------------------------------
 # Core library tests
