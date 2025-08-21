@@ -15,7 +15,7 @@ public:
   /// @brief Destructor.
   ~DCCurrentSource();
 
-  /// @brief Get dc current source amps.
+  /// @brief Get DC current source amps.
   /// @return Current level (amps).
   float getAmps() const;
 

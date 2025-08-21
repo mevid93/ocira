@@ -5,7 +5,7 @@
 
 namespace ocira::core {
 
-class Node;
+class Bus;
 
 /// @brief Supported circuit component types.
 enum class ComponentType {
@@ -21,7 +21,7 @@ enum class ComponentType {
   WIRE
 };
 
-/// @brief Base circuit component class. Components are edges in circuit graph.
+/// @brief Base component class. Components are edges in circuit graph.
 class Component {
 public:
   /// @brief Constructor.
@@ -39,33 +39,33 @@ public:
   /// @return Component type.
   ComponentType getComponentType() const;
 
-  /// @brief Connect first node to component.
-  /// @param node Node to connect.
-  /// @return True if node was connected. False otherwise.
-  bool connectFirstNode(std::weak_ptr<Node> node);
+  /// @brief Connect first bus to the component.
+  /// @param bus Bus to connect.
+  /// @return True if bus was connected. False otherwise.
+  bool connectFirstBus(std::weak_ptr<Bus> bus);
 
-  /// @brief Connect second node to component.
-  /// @param node Node to connect.
-  /// @return True if node was connected. False otherwise.
-  bool connectSecondNode(std::weak_ptr<Node> node);
+  /// @brief Connect second bus to component.
+  /// @param bus Bus to connect.
+  /// @return True if bus was connected. False otherwise.
+  bool connectSecondBus(std::weak_ptr<Bus> bus);
 
-  /// @brief Disconnect node from component.
-  /// @param node Node to disconnect.
-  /// @return True if node was disconnected. False otherwise.
-  bool disconnectNode(std::weak_ptr<Node> node);
+  /// @brief Disconnect bus from component.
+  /// @param bus Bus to disconnect.
+  /// @return True if bus was disconnected. False otherwise.
+  bool disconnectBus(std::weak_ptr<Bus> bus);
 
-  /// @brief Check if component is connected to node.
-  /// @param node Node to check.
-  /// @return True if component is connected to Node. False otherwise.
-  bool isConnectedToNode(std::weak_ptr<Node> node) const;
+  /// @brief Check if component is connected to bus.
+  /// @param bus Bus to check.
+  /// @return True if component is connected to bus. False otherwise.
+  bool isConnectedToBus(std::weak_ptr<Bus> bus) const;
 
 protected:
   ComponentType m_type;
 
 private:
   uint32_t m_id;
-  std::weak_ptr<Node> m_node1;
-  std::weak_ptr<Node> m_node2;
+  std::weak_ptr<Bus> m_bus1;
+  std::weak_ptr<Bus> m_bus2;
 };
 } // namespace ocira::core
 

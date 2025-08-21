@@ -18,7 +18,7 @@ TEST(resistor, set_resistance) {
   // Create new Resistor object.
   Resistor resistor(1, 100);
   // Set new resistance value.
-  resistor.setResistance(200);
+  resistor.setResistance(200.5);
   // Expect equality.
-  EXPECT_EQ(resistor.getResistance(), 200);
+  EXPECT_EQ(resistor.getResistance(), 200.5);
 }

@@ -10,21 +10,21 @@ public:
   /// @brief Constructor.
   /// @param id Resistor id.
   /// @param resistance Resistor resistance value (Ohm);
-  explicit Resistor(uint32_t id, uint32_t resistance);
+  explicit Resistor(uint32_t id, float resistance);
 
   /// @brief Destructor.
   ~Resistor();
 
   /// @brief Get resistor resistance.
   /// @return Resistance.
-  uint32_t getResistance() const;
+  float getResistance() const;
 
   /// @brief Set resistor resistance.
   /// @param resistance Resistance.
-  void setResistance(uint32_t resistance);
+  void setResistance(float resistance);
 
 private:
-  uint32_t m_resistance;
+  float m_resistance;
 };
 } // namespace ocira::core
 

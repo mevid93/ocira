@@ -1,5 +1,5 @@
+#include "bus.hpp"
 #include "component.hpp"
-#include "node.hpp"
 #include <gtest/gtest.h>
 #include <memory>
 
@@ -21,73 +21,73 @@ TEST(component, component_type_is_returned) {
   EXPECT_EQ(component.getComponentType(), ComponentType::UNDEFINED);
 }
 
-// Test that first node can be connected.
-TEST(component, connect_first_node) {
+// Test that first bus can be connected.
+TEST(component, connect_first_bus) {
   // Create new component object.
   Component component(1);
-  // Create new node object.
-  std::shared_ptr<Node> node = std::make_shared<Node>(1);
-  // Connect first node to component.
-  bool wasConnected = component.connectFirstNode(node);
+  // Create new bus object.
+  std::shared_ptr<Bus> bus = std::make_shared<Bus>(1);
+  // Connect first bus to component.
+  bool wasConnected = component.connectFirstBus(bus);
   EXPECT_TRUE(wasConnected);
-  // Try to connect node again.
-  wasConnected = component.connectFirstNode(node);
+  // Try to connect bus again.
+  wasConnected = component.connectFirstBus(bus);
   EXPECT_FALSE(wasConnected);
-  wasConnected = component.connectSecondNode(node);
+  wasConnected = component.connectSecondBus(bus);
   EXPECT_FALSE(wasConnected);
 }
 
-// Test that second node can be connected.
-TEST(component, connect_second_node) {
+// Test that second bus can be connected.
+TEST(component, connect_second_bus) {
   // Create new component object.
   Component component(1);
-  // Create new node object.
-  std::shared_ptr<Node> node = std::make_shared<Node>(1);
-  // Connect second node to component.
-  bool wasConnected = component.connectSecondNode(node);
+  // Create new bus object.
+  std::shared_ptr<Bus> bus = std::make_shared<Bus>(1);
+  // Connect second bus to component.
+  bool wasConnected = component.connectSecondBus(bus);
   EXPECT_TRUE(wasConnected);
-  // Try to connect node again.
-  wasConnected = component.connectSecondNode(node);
+  // Try to connect bus again.
+  wasConnected = component.connectSecondBus(bus);
   EXPECT_FALSE(wasConnected);
-  wasConnected = component.connectFirstNode(node);
+  wasConnected = component.connectFirstBus(bus);
   EXPECT_FALSE(wasConnected);
 }
 
-// Test disconnecting node.
-TEST(component, disconnect_node) {
+// Test disconnecting bus.
+TEST(component, disconnect_bus) {
   // Creare new component object.
   Component component(1);
-  // Create new node object.
-  std::shared_ptr<Node> node = std::make_shared<Node>(1);
-  // Connect node to component.
-  component.connectFirstNode(node);
-  // Disconnect node.
-  bool wasDisconnected = component.disconnectNode(node);
+  // Create new bus object.
+  std::shared_ptr<Bus> bus = std::make_shared<Bus>(1);
+  // Connect bus to component.
+  component.connectFirstBus(bus);
+  // Disconnect bus.
+  bool wasDisconnected = component.disconnectBus(bus);
   EXPECT_TRUE(wasDisconnected);
-  wasDisconnected = component.disconnectNode(node);
+  wasDisconnected = component.disconnectBus(bus);
   EXPECT_FALSE(wasDisconnected);
-  // Connect node to component.
-  component.connectSecondNode(node);
-  // Disconnect node.
-  wasDisconnected = component.disconnectNode(node);
+  // Connect bus to component.
+  component.connectSecondBus(bus);
+  // Disconnect bus.
+  wasDisconnected = component.disconnectBus(bus);
   EXPECT_TRUE(wasDisconnected);
-  wasDisconnected = component.disconnectNode(node);
+  wasDisconnected = component.disconnectBus(bus);
   EXPECT_FALSE(wasDisconnected);
 }
 
-// Test if component is connected to node.
-TEST(component, is_connected_to_node) {
+// Test if component is connected to bus.
+TEST(component, is_connected_to_bus) {
   // Create new component object.
   Component component(1);
-  // Create new node objects.
-  std::shared_ptr<Node> node1 = std::make_shared<Node>(1);
-  std::shared_ptr<Node> node2 = std::make_shared<Node>(2);
-  std::shared_ptr<Node> node3 = std::make_shared<Node>(3);
-  // Connect nodes to component.
-  component.connectFirstNode(node1);
-  component.connectSecondNode(node2);
+  // Create new bus objects.
+  std::shared_ptr<Bus> bus1 = std::make_shared<Bus>(1);
+  std::shared_ptr<Bus> bus2 = std::make_shared<Bus>(2);
+  std::shared_ptr<Bus> bus3 = std::make_shared<Bus>(3);
+  // Connect buses to component.
+  component.connectFirstBus(bus1);
+  component.connectSecondBus(bus2);
   // Verify connections.
-  EXPECT_TRUE(component.isConnectedToNode(node1));
-  EXPECT_TRUE(component.isConnectedToNode(node2));
-  EXPECT_FALSE(component.isConnectedToNode(node3));
+  EXPECT_TRUE(component.isConnectedToBus(bus1));
+  EXPECT_TRUE(component.isConnectedToBus(bus2));
+  EXPECT_FALSE(component.isConnectedToBus(bus3));
 }
