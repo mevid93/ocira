@@ -2,11 +2,11 @@
 #include <algorithm>
 
 namespace ocira::core {
-Bus::Bus(uint32_t id) : m_id(id) { this->m_components = std::vector<std::shared_ptr<Component>>(); }
+Bus::Bus(BusId id) : m_id(id) { this->m_components = std::vector<std::shared_ptr<Component>>(); }
 
 Bus::~Bus() {}
 
-uint32_t Bus::getId() const { return this->m_id; }
+BusId Bus::getId() const { return this->m_id; }
 
 bool Bus::connectComponent(std::shared_ptr<Component> component) {
   // Check if component already has been connected.

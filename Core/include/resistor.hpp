@@ -8,9 +8,9 @@ namespace ocira::core {
 class Resistor : public Component {
 public:
   /// @brief Constructor.
-  /// @param id Resistor id.
+  /// @param id Component id.
   /// @param resistance Resistor resistance value (Ohm);
-  explicit Resistor(uint32_t id, float resistance);
+  explicit Resistor(ComponentId id, float resistance);
 
   /// @brief Destructor.
   ~Resistor();

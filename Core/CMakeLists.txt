@@ -7,8 +7,12 @@ add_library(ocira_core "${CORE_SRC_FILES}")
 
 target_include_directories(ocira_core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-target_include_directories(ocira_core PRIVATE ${armadillo_SOURCE_DIR}/include)
-target_link_libraries(ocira_core PRIVATE armadillo)
+message(STATUS "Armadillo include path: ${armadillo_SOURCE_DIR}/include")
+
+target_include_directories(ocira_core PUBLIC ${armadillo_SOURCE_DIR}/include)
+find_library(ARMADILLO_LIB armadillo PATHS ${armadillo_BINARY_DIR} NO_DEFAULT_PATH)
+target_link_libraries(ocira_core PRIVATE ${ARMADILLO_LIB})
+
 
 
 #----------------------------------------------------------------------------

@@ -21,12 +21,15 @@ enum class ComponentType {
   WIRE
 };
 
+/// @brief Component id. Each component should have a unique id.
+using ComponentId = uint32_t;
+
 /// @brief Base component class. Components are edges in circuit graph.
 class Component {
 public:
   /// @brief Constructor.
   /// @param id Component id.
-  explicit Component(uint32_t id);
+  explicit Component(ComponentId id);
 
   /// @brief Destructor.
   ~Component();
@@ -63,7 +66,7 @@ protected:
   ComponentType m_type;
 
 private:
-  uint32_t m_id;
+  ComponentId m_id;
   std::weak_ptr<Bus> m_bus1;
   std::weak_ptr<Bus> m_bus2;
 };

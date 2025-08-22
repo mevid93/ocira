@@ -5,19 +5,22 @@
 #include <vector>
 
 namespace ocira::core {
+/// @brief Bus id. Each bus in circuit should have a unique identifier.
+using BusId = uint32_t;
+
 /// @brief Bus class. These are the junctions in a circuit graph.
 class Bus {
 public:
   /// @brief Constructor.
   /// @param id Bus id.
-  explicit Bus(uint32_t id);
+  explicit Bus(BusId id);
 
   /// @brief Destructor.
   ~Bus();
 
   /// @brief Returns bus id.
   /// @return Bus id.
-  uint32_t getId() const;
+  BusId getId() const;
 
   /// @brief Connect a new component to the bus.
   /// @param component Component to connect.
@@ -39,7 +42,7 @@ public:
   bool isConnectedToComponent(std::shared_ptr<Component> component) const;
 
 private:
-  uint32_t m_id;
+  BusId m_id;
   std::vector<std::shared_ptr<Component>> m_components;
 };
 } // namespace ocira::core

@@ -3,14 +3,14 @@
 #include <algorithm>
 
 namespace ocira::core {
-Component::Component(uint32_t id) : m_id(id) {
+Component::Component(ComponentId id) : m_id(id) {
   // For base class we use component type UNDEFINED.
   this->m_type = ComponentType::UNDEFINED;
 }
 
 Component::~Component() {}
 
-uint32_t Component::getId() const { return this->m_id; }
+ComponentId Component::getId() const { return this->m_id; }
 
 ComponentType Component::getComponentType() const { return this->m_type; }
 

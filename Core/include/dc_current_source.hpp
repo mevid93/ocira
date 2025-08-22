@@ -8,9 +8,9 @@ namespace ocira::core {
 class DCCurrentSource : public Component {
 public:
   /// @brief Constructor.
-  /// @param id DC current source id.
+  /// @param id Component id.
   /// @param amps DC current source amps.
-  explicit DCCurrentSource(uint32_t id, float amps);
+  explicit DCCurrentSource(ComponentId id, float amps);
 
   /// @brief Destructor.
   ~DCCurrentSource();

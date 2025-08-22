@@ -1,7 +1,7 @@
 #include "dc_current_source.hpp"
 
 namespace ocira::core {
-DCCurrentSource::DCCurrentSource(uint32_t id, float amps) : Component(id) {
+DCCurrentSource::DCCurrentSource(ComponentId id, float amps) : Component(id) {
   this->m_amps = amps;
   this->m_type = ComponentType::DC_CURRENT_SOURCE;
 }

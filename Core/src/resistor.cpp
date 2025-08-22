@@ -1,7 +1,7 @@
 #include "resistor.hpp"
 
 namespace ocira::core {
-Resistor::Resistor(uint32_t id, float resistance) : Component(id) {
+Resistor::Resistor(ComponentId id, float resistance) : Component(id) {
   this->m_type = ComponentType::RESISTOR;
   this->m_resistance = resistance;
 }
