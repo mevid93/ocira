@@ -2,6 +2,7 @@
 #include "circuit_transformer.hpp"
 #include "component.hpp"
 #include "dc_current_source.hpp"
+#include "ground.hpp"
 #include "resistor.hpp"
 #include <gtest/gtest.h>
 #include <memory>
@@ -25,17 +26,20 @@ TEST(circuit_transfomer, circuit_with_dc_current_source_and_resistor) {
   std::shared_ptr<Circuit> circuit = std::make_shared<Circuit>();
   std::shared_ptr<DCCurrentSource> dcCurrentSrc = std::make_shared<DCCurrentSource>(1, 1.0);
   std::shared_ptr<Resistor> resistor = std::make_shared<Resistor>(2, 200);
+  std::shared_ptr<Ground> ground = std::make_shared<Ground>(3);
   std::shared_ptr<Bus> bus1 = std::make_shared<Bus>(1);
   std::shared_ptr<Bus> bus2 = std::make_shared<Bus>(2);
 
-  dcCurrentSrc->connectFirstBus(bus1);
-  dcCurrentSrc->connectSecondBus(bus2);
-  resistor->connectFirstBus(bus1);
-  resistor->connectSecondBus(bus2);
+  dcCurrentSrc->addConnection(bus1, TerminalRole::NEGATIVE);
+  dcCurrentSrc->addConnection(bus2, TerminalRole::POSITIVE);
+  resistor->addConnection(bus1, TerminalRole::NEGATIVE);
+  resistor->addConnection(bus2, TerminalRole::POSITIVE);
+  ground->addConnection(bus1, TerminalRole::NEGATIVE);
 
   std::vector<std::shared_ptr<Component>> components;
   components.push_back(dcCurrentSrc);
   components.push_back(resistor);
+  components.push_back(ground);
 
   std::vector<std::shared_ptr<Bus>> buses;
   buses.push_back(bus1);

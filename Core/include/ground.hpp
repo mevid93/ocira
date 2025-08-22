@@ -14,6 +14,12 @@ public:
   /// @brief Destructor.
   ~Ground();
 
+  /// @brief
+  /// @param bus Bus to connect.
+  /// @param role Terminal role of the connection.
+  /// @return True if connection was added. False otherwise.
+  bool addConnection(std::weak_ptr<Bus> bus, TerminalRole role) override;
+
 private:
 };
 } // namespace ocira::core

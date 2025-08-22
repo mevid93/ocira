@@ -16,12 +16,16 @@ class CircuitTransformer {
 public:
   /// @brief Constructor.
   CircuitTransformer(const std::shared_ptr<Circuit> &circuit);
+
   /// @brief Destructor.
   ~CircuitTransformer();
+
   /// @brief Get conductance matrix.
   arma::cx_mat getConductanceMatrix() const;
+
   /// @brief Get current vector.
   arma::cx_vec getCurrentVector() const;
+
   /// @brief Each bus has an id, but for matrix computation we are using different numbering system.
   /// This method returns a hash map, where each bus number is mapped to corresponding bus id.
   /// This is needed for mapping the computation results to correct buses.

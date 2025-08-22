@@ -21,35 +21,19 @@ TEST(component, component_type_is_returned) {
   EXPECT_EQ(component.getComponentType(), ComponentType::UNDEFINED);
 }
 
-// Test that first bus can be connected.
+// Test that bus can be connected.
 TEST(component, connect_first_bus) {
   // Create new component object.
   Component component(1);
   // Create new bus object.
   std::shared_ptr<Bus> bus = std::make_shared<Bus>(1);
   // Connect first bus to component.
-  bool wasConnected = component.connectFirstBus(bus);
+  bool wasConnected = component.addConnection(bus, TerminalRole::NEGATIVE);
   EXPECT_TRUE(wasConnected);
   // Try to connect bus again.
-  wasConnected = component.connectFirstBus(bus);
+  wasConnected = component.addConnection(bus, TerminalRole::NEGATIVE);
   EXPECT_FALSE(wasConnected);
-  wasConnected = component.connectSecondBus(bus);
-  EXPECT_FALSE(wasConnected);
-}
-
-// Test that second bus can be connected.
-TEST(component, connect_second_bus) {
-  // Create new component object.
-  Component component(1);
-  // Create new bus object.
-  std::shared_ptr<Bus> bus = std::make_shared<Bus>(1);
-  // Connect second bus to component.
-  bool wasConnected = component.connectSecondBus(bus);
-  EXPECT_TRUE(wasConnected);
-  // Try to connect bus again.
-  wasConnected = component.connectSecondBus(bus);
-  EXPECT_FALSE(wasConnected);
-  wasConnected = component.connectFirstBus(bus);
+  wasConnected = component.addConnection(bus, TerminalRole::POSITIVE);
   EXPECT_FALSE(wasConnected);
 }
 
@@ -60,18 +44,11 @@ TEST(component, disconnect_bus) {
   // Create new bus object.
   std::shared_ptr<Bus> bus = std::make_shared<Bus>(1);
   // Connect bus to component.
-  component.connectFirstBus(bus);
+  component.addConnection(bus, TerminalRole::NEGATIVE);
   // Disconnect bus.
-  bool wasDisconnected = component.disconnectBus(bus);
+  bool wasDisconnected = component.removeConnection(bus);
   EXPECT_TRUE(wasDisconnected);
-  wasDisconnected = component.disconnectBus(bus);
-  EXPECT_FALSE(wasDisconnected);
-  // Connect bus to component.
-  component.connectSecondBus(bus);
-  // Disconnect bus.
-  wasDisconnected = component.disconnectBus(bus);
-  EXPECT_TRUE(wasDisconnected);
-  wasDisconnected = component.disconnectBus(bus);
+  wasDisconnected = component.removeConnection(bus);
   EXPECT_FALSE(wasDisconnected);
 }
 
@@ -84,8 +61,9 @@ TEST(component, is_connected_to_bus) {
   std::shared_ptr<Bus> bus2 = std::make_shared<Bus>(2);
   std::shared_ptr<Bus> bus3 = std::make_shared<Bus>(3);
   // Connect buses to component.
-  component.connectFirstBus(bus1);
-  component.connectSecondBus(bus2);
+  component.addConnection(bus1, TerminalRole::NEGATIVE);
+  component.addConnection(bus2, TerminalRole::POSITIVE);
+  component.addConnection(bus3, TerminalRole::POSITIVE);
   // Verify connections.
   EXPECT_TRUE(component.isConnectedToBus(bus1));
   EXPECT_TRUE(component.isConnectedToBus(bus2));
