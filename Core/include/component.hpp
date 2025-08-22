@@ -14,11 +14,12 @@ enum class ComponentType {
   CAPACITOR,
   DC_CURRENT_SOURCE,
   DC_VOLTAGE_SOURCE,
+  GROUND,
   IMPEDANCE,
   INDUCTOR,
   RESISTOR,
   UNDEFINED,
-  WIRE
+  WIRE,
 };
 
 /// @brief Component id. Each component should have a unique id.
