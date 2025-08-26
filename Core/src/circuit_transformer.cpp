@@ -3,7 +3,7 @@
 // File:        circuit_transformer.cpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Code logic to transform circuit to G matrix and J vector.
+// Description: Code logic to transform circuit to Y matrix and J vector.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -63,7 +63,7 @@ CircuitTransformer::CircuitTransformer(const std::shared_ptr<Circuit> &circuit)
 
   // 2. Initialize G matrix and J vector.
   uint32_t n = indice;
-  this->m_G = std::make_shared<arma::cx_mat>(n - 1, n - 1, arma::fill::zeros);
+  this->m_Y = std::make_shared<arma::cx_mat>(n - 1, n - 1, arma::fill::zeros);
   this->m_J = std::make_shared<arma::cx_vec>(n - 1, arma::fill::zeros);
 
   // 3. Loop through the components and update the G matrix and J vector.
@@ -72,7 +72,7 @@ CircuitTransformer::CircuitTransformer(const std::shared_ptr<Circuit> &circuit)
 
 CircuitTransformer::~CircuitTransformer() {}
 
-std::shared_ptr<arma::cx_mat> CircuitTransformer::getConductanceMatrix() const { return this->m_G; }
+std::shared_ptr<arma::cx_mat> CircuitTransformer::getAdmittanceMatrix() const { return this->m_Y; }
 
 std::shared_ptr<arma::cx_vec> CircuitTransformer::getCurrentVector() const { return this->m_J; }
 
@@ -126,16 +126,16 @@ void CircuitTransformer::_transformResistor(std::shared_ptr<Resistor> resistor) 
     BusNumber j = this->m_busIdMap[busId2];
 
     if (i != 0) {
-      (*this->m_G)(i - 1, i - 1) += conductance;
+      (*this->m_Y)(i - 1, i - 1) += conductance;
     }
 
     if (j != 0) {
-      (*this->m_G)(j - 1, j - 1) += conductance;
+      (*this->m_Y)(j - 1, j - 1) += conductance;
     }
 
     if (i != 0 && j != 0) {
-      (*this->m_G)(i - 1, j - 1) -= conductance;
-      (*this->m_G)(j - 1, i - 1) -= conductance;
+      (*this->m_Y)(i - 1, j - 1) -= conductance;
+      (*this->m_Y)(j - 1, i - 1) -= conductance;
     }
   } else {
     throw std::runtime_error("Unexpected error! Pointer not existing!");

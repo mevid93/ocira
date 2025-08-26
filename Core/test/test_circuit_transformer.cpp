@@ -42,16 +42,16 @@ TEST(circuit_transfomer, example_circuit_1) {
 
   // Get conductance matrix, current vector, and bus mappings.
   CircuitTransformer circuitTransformer(circuit);
-  std::shared_ptr<arma::cx_mat> gMatrix = circuitTransformer.getConductanceMatrix();
+  std::shared_ptr<arma::cx_mat> yMatrix = circuitTransformer.getAdmittanceMatrix();
   std::shared_ptr<arma::cx_vec> iVector = circuitTransformer.getCurrentVector();
   std::unordered_map<BusNumber, BusId> bNumberMap = circuitTransformer.getBusNumberMap();
   std::unordered_map<BusId, BusNumber> bIdMap = circuitTransformer.getBusIdMap();
 
   // Verify results.
-  EXPECT_EQ(gMatrix->n_rows, 1);
-  EXPECT_EQ(gMatrix->n_cols, 1);
-  EXPECT_FLOAT_EQ((*gMatrix)(0, 0).real(), 1.0 / 200);
-  EXPECT_FLOAT_EQ((*gMatrix)(0, 0).imag(), 0);
+  EXPECT_EQ(yMatrix->n_rows, 1);
+  EXPECT_EQ(yMatrix->n_cols, 1);
+  EXPECT_FLOAT_EQ((*yMatrix)(0, 0).real(), 1.0 / 200);
+  EXPECT_FLOAT_EQ((*yMatrix)(0, 0).imag(), 0);
 
   EXPECT_EQ(iVector->n_elem, 1);
   EXPECT_EQ((*iVector)(0).real(), 1.0f);

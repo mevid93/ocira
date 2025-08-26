@@ -3,7 +3,7 @@
 // File:        circuit_transformer.hpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Code logic to transform circuit to G matrix and J vector.
+// Description: Code logic to transform circuit to Y matrix and J vector.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -43,12 +43,12 @@
 
 namespace ocira::core {
 
-/// @brief Bus number. Each bus that is used for conductance matrix has a unique bus number. Bus
+/// @brief Bus number. Each bus that is used for admittance matrix has a unique bus number. Bus
 /// that is connected to ground always has bus number 0.
 using BusNumber = uint32_t;
 
-/// @brief Circuit transformer class. Used to transform circuit into conductance matrix and current
-/// vector (G * U = J). Voltage vector U is unknown.
+/// @brief Circuit transformer class. Used to transform circuit into admittance matrix and current
+/// vector (Y * U = J). Voltage vector U is unknown.
 class CircuitTransformer {
 public:
   /// @brief Constructor.
@@ -58,9 +58,9 @@ public:
   /// @brief Destructor.
   ~CircuitTransformer();
 
-  /// @brief Get conductance matrix.
-  /// @return Conductance matrix G.
-  std::shared_ptr<arma::cx_mat> getConductanceMatrix() const;
+  /// @brief Get admittance matrix.
+  /// @return Admittance matrix Y.
+  std::shared_ptr<arma::cx_mat> getAdmittanceMatrix() const;
 
   /// @brief Get current vector.
   /// @return Current vector J.
@@ -78,19 +78,19 @@ public:
 
 private:
   std::shared_ptr<Circuit> m_circuit;
-  std::shared_ptr<arma::cx_mat> m_G;
+  std::shared_ptr<arma::cx_mat> m_Y;
   std::shared_ptr<arma::cx_vec> m_J;
   std::unordered_map<BusNumber, BusId> m_busNumberMap;
   std::unordered_map<BusId, BusNumber> m_busIdMap;
 
-  /// @brief Update G matrix and J vector with circuit components.
+  /// @brief Update Y matrix and J vector with circuit components.
   void _transformComponents();
 
-  /// @brief Update G matrix with resistor component.
+  /// @brief Update Y matrix with resistor component.
   /// @param resistor Resistor component to transform.
   void _transformResistor(std::shared_ptr<Resistor> resistor);
 
-  /// @brief Update J vector with DC current source component.
+  /// @brief Update Y vector with DC current source component.
   /// @param dcCurrentSrc DC current source component to transform.
   void _transformDCCurrentSource(std::shared_ptr<DCCurrentSource> dcCurrentSrc);
 };
