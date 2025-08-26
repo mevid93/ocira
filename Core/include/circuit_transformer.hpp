@@ -92,7 +92,7 @@ private:
 
   /// @brief Update J vector with DC current source component.
   /// @param dcCurrentSrc DC current source component to transform.
-  void _transformDcCurrentSource(std::shared_ptr<DCCurrentSource> dcCurrentSrc);
+  void _transformDCCurrentSource(std::shared_ptr<DCCurrentSource> dcCurrentSrc);
 };
 }; // namespace ocira::core
 

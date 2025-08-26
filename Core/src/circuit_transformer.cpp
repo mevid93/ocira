@@ -101,7 +101,7 @@ void CircuitTransformer::_transformComponents() {
     case ComponentType::DC_CURRENT_SOURCE: {
       std::shared_ptr<DCCurrentSource> dcCurrentSrc =
           std::dynamic_pointer_cast<DCCurrentSource>(component);
-      this->_transformDcCurrentSource(dcCurrentSrc);
+      this->_transformDCCurrentSource(dcCurrentSrc);
       break;
     }
     default:
@@ -142,7 +142,7 @@ void CircuitTransformer::_transformResistor(std::shared_ptr<Resistor> resistor) 
   }
 }
 
-void CircuitTransformer::_transformDcCurrentSource(std::shared_ptr<DCCurrentSource> dcCurrentSrc) {
+void CircuitTransformer::_transformDCCurrentSource(std::shared_ptr<DCCurrentSource> dcCurrentSrc) {
   float amps = dcCurrentSrc->getAmps();
 
   auto connection1 = dcCurrentSrc->getConnections()[0];
