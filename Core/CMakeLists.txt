@@ -23,9 +23,14 @@ if (BUILD_TESTING)
 
     include(GoogleTest)
 
-    file(GLOB CORE_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp")
+    file(GLOB CORE_TEST_FILES 
+        "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test/utils/src/*.cpp"
+    )
 
     add_executable(core_tests "${CORE_TEST_FILES}")
+
+    target_include_directories(core_tests PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/test/utils/include")
 
     target_link_libraries(core_tests PRIVATE gtest_main)
 

@@ -1,62 +1,61 @@
+//==============================================================================
+// File:        test_circuit_transformer.cpp
+// Author:      Martin Vidjeskog
+// Created:     2025-08-26
+// Description: Unit tests for CircuitTransformer class in OCIRA core library.
+// License:     GNU General Public License v3.0
+//==============================================================================
+//
+// This file is part of OCIRA (core library).
+//
+// OCIRA is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// OCIRA is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+//
+//==============================================================================
+// Notes:
+// - Tests cover CircuitTransfomer class.
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=circuit_transfomer.*
+//==============================================================================
+
 #include "circuit.hpp"
 #include "circuit_transformer.hpp"
-#include "component.hpp"
-#include "dc_current_source.hpp"
-#include "ground.hpp"
-#include "resistor.hpp"
+#include "example_circuit_generator.hpp"
 #include <gtest/gtest.h>
 #include <memory>
 
 using namespace ocira::core;
 
-// Test that circuit transformer constructor works.
-TEST(circuit_transformer, constructor_works) {
-  // Create a circuit.
-  std::shared_ptr<Circuit> circuit = std::make_shared<Circuit>();
-  // Create circuit transformer.
-  CircuitTransformer circuitTransformer(circuit);
-  // Check values.
-  EXPECT_EQ(circuitTransformer.getBusMappings().size(), 0);
-}
-
-// Test circuit transformer for simple case, where circuit has one dc current source, and
-// one resistor.
-TEST(circuit_transfomer, circuit_with_dc_current_source_and_resistor) {
-  // Create a circuit.
-  std::shared_ptr<Circuit> circuit = std::make_shared<Circuit>();
-  std::shared_ptr<DCCurrentSource> dcCurrentSrc = std::make_shared<DCCurrentSource>(1, 1.0);
-  std::shared_ptr<Resistor> resistor = std::make_shared<Resistor>(2, 200);
-  std::shared_ptr<Ground> ground = std::make_shared<Ground>(3);
-  std::shared_ptr<Bus> bus1 = std::make_shared<Bus>(1);
-  std::shared_ptr<Bus> bus2 = std::make_shared<Bus>(2);
-
-  dcCurrentSrc->addConnection(bus1, TerminalRole::NEGATIVE);
-  dcCurrentSrc->addConnection(bus2, TerminalRole::POSITIVE);
-  resistor->addConnection(bus1, TerminalRole::NEGATIVE);
-  resistor->addConnection(bus2, TerminalRole::POSITIVE);
-  ground->addConnection(bus1, TerminalRole::NEGATIVE);
-
-  std::vector<std::shared_ptr<Component>> components;
-  components.push_back(dcCurrentSrc);
-  components.push_back(resistor);
-  components.push_back(ground);
-
-  std::vector<std::shared_ptr<Bus>> buses;
-  buses.push_back(bus1);
-  buses.push_back(bus2);
-
-  circuit->setBuses(buses);
-  circuit->setComponents(components);
+// Test circuit transformer for example circuit 1.
+TEST(circuit_transfomer, example_circuit_1) {
+  // Get example circuit.
+  const auto circuit = test::utils::ExampleCircuitGenerator::getExampleCircuit1();
 
   // Get conductance matrix, current vector, and bus mappings.
   CircuitTransformer circuitTransformer(circuit);
-  arma::cx_mat gMatrix = circuitTransformer.getConductanceMatrix();
-  arma::cx_vec iVector = circuitTransformer.getCurrentVector();
-  std::unordered_map<BusNumber, BusId> bMappings = circuitTransformer.getBusMappings();
+  std::shared_ptr<arma::cx_mat> gMatrix = circuitTransformer.getConductanceMatrix();
+  std::shared_ptr<arma::cx_vec> iVector = circuitTransformer.getCurrentVector();
+  std::unordered_map<BusNumber, BusId> bNumberMap = circuitTransformer.getBusNumberMap();
+  std::unordered_map<BusId, BusNumber> bIdMap = circuitTransformer.getBusIdMap();
 
   // Verify results.
-  EXPECT_EQ(gMatrix.n_rows, 1);
-  EXPECT_EQ(gMatrix.n_cols, 2);
-  EXPECT_EQ(iVector.n_elem, 1);
-  EXPECT_EQ(bMappings.size(), 1);
+  EXPECT_EQ(gMatrix->n_rows, 1);
+  EXPECT_EQ(gMatrix->n_cols, 1);
+  EXPECT_FLOAT_EQ((*gMatrix)(0, 0).real(), 1.0 / 200);
+  EXPECT_FLOAT_EQ((*gMatrix)(0, 0).imag(), 0);
+
+  EXPECT_EQ(iVector->n_elem, 1);
+  EXPECT_EQ((*iVector)(0).real(), 1.0f);
+
+  EXPECT_EQ(bNumberMap.size(), 2);
+  EXPECT_EQ(bIdMap.size(), 2);
 }

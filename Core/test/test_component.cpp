@@ -1,3 +1,32 @@
+//==============================================================================
+// File:        test_component.cpp
+// Author:      Martin Vidjeskog
+// Created:     2025-08-26
+// Description: Unit tests for Component class in OCIRA core library.
+// License:     GNU General Public License v3.0
+//==============================================================================
+//
+// This file is part of OCIRA (core library).
+//
+// OCIRA is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// OCIRA is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+//
+//==============================================================================
+// Notes:
+// - Tests cover Component class.
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=component.*
+//==============================================================================
+
 #include "bus.hpp"
 #include "component.hpp"
 #include <gtest/gtest.h>
@@ -5,7 +34,7 @@
 
 using namespace ocira::core;
 
-// Test Component class constructor.
+/// @brief Test Component class constructor.
 TEST(component, constructor_works) {
   // Create new Component object.
   Component component(1);
@@ -21,7 +50,7 @@ TEST(component, component_type_is_returned) {
   EXPECT_EQ(component.getComponentType(), ComponentType::UNDEFINED);
 }
 
-// Test that bus can be connected.
+/// @brief Test that a bus can be connected.
 TEST(component, connect_first_bus) {
   // Create new component object.
   Component component(1);
@@ -37,7 +66,7 @@ TEST(component, connect_first_bus) {
   EXPECT_FALSE(wasConnected);
 }
 
-// Test disconnecting bus.
+/// @brief Test disconnecting a bus.
 TEST(component, disconnect_bus) {
   // Creare new component object.
   Component component(1);
@@ -52,7 +81,7 @@ TEST(component, disconnect_bus) {
   EXPECT_FALSE(wasDisconnected);
 }
 
-// Test if component is connected to bus.
+/// @brief Test if a component is connected to a bus.
 TEST(component, is_connected_to_bus) {
   // Create new component object.
   Component component(1);

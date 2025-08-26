@@ -1,8 +1,9 @@
 //==============================================================================
-// File:        test_ground.cpp
+// Project:     OCIRA (core library tests)
+// File:        example_circuit_generator.hpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Unit tests for Ground class in OCIRA core library.
+// Description: Utility class to generate example circuits.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -22,21 +23,31 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 //
 //==============================================================================
+// Revision History:
+// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - [YYYY-MM-DD] [Contributor]: [Description of change]
+//==============================================================================
 // Notes:
-// - Tests cover Ground class.
-// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=ground.*
+// - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#include "ground.hpp"
-#include <gtest/gtest.h>
+#ifndef OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP
+#define OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP
 
-using namespace ocira::core;
+#include "circuit.hpp"
+#include "component.hpp"
+#include <vector>
 
-/// @brief Test Ground class constructor.
-TEST(ground, constructor_works) {
-  // Create new Ground object.
-  Ground ground(1);
-  // Expect equality.
-  EXPECT_EQ(ground.getId(), 1);
-  EXPECT_EQ(ground.getComponentType(), ComponentType::GROUND);
-}
+namespace ocira::core::test::utils {
+
+/// @brief ExampleCircuitGenerator class. Provides static functions to generate example circuits
+/// that can be used in unit tests.
+class ExampleCircuitGenerator {
+public:
+  /// @brief Returns example circuit 1. Circuit contains one resistor and one dc current source.
+  /// @return Example circuit 1.
+  static std::shared_ptr<Circuit> getExampleCircuit1();
+};
+} // namespace ocira::core::test::utils
+
+#endif
