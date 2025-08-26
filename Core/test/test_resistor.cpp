@@ -51,3 +51,11 @@ TEST(resistor, set_resistance) {
   // Expect equality.
   EXPECT_EQ(resistor.getResistance(), 200.5);
 }
+
+/// @brief Test that correct conductance is returned.
+TEST(resistor, get_conductance) {
+  // Create new Resistor object.
+  Resistor resistor(1, 200);
+  // Expect equality.
+  EXPECT_FLOAT_EQ(resistor.getConductance(), 0.005);
+}
