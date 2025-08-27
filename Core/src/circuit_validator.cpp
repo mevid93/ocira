@@ -37,6 +37,30 @@
 
 namespace ocira::core {
 
-ValidationResult CircuitValidator::isValidCircuit(const Circuit &circuit) {}
+ValidationResult CircuitValidator::isValidCircuit(const Circuit &circuit) {
+  if (circuit.getSimulationMode() == SimulationMode::DC) {
+    return _isValidDCCircuit(circuit);
+  }
+
+  return _isValidACCircuit(circuit);
+}
+
+// PRIVATE METHODS
+
+ValidationResult CircuitValidator::_isValidDCCircuit(const Circuit &circuit) {
+  ValidationResult result = {};
+
+  // TODO!!!
+
+  return result;
+}
+
+ValidationResult CircuitValidator::_isValidACCircuit(const Circuit &circuit) {
+  ValidationResult result = {};
+
+  // TODO!!!
+
+  return result;
+}
 
 } // namespace ocira::core

@@ -54,6 +54,19 @@ public:
   static ValidationResult isValidCircuit(const Circuit &circuit);
 
 private:
+  /// @brief Performs validation checks specific to DC circuits.
+  /// Ensures all components are properly connected, grounded and that the circuit forms a closed
+  /// loop.
+  /// @param circuit Reference to the Circuit object.
+  /// @return ValidationResult with diagnostics and error codes if validation fails.
+  static ValidationResult _isValidDCCircuit(const Circuit &circuit);
+
+  /// @brief Performs validation checks specific to AC circuits.
+  /// Ensures all components are properly connected, grounded and that the circuit forms a closed
+  /// loop.
+  /// @param circuit Reference to the Circuit object.
+  /// @return ValidationResult with diagnostics and error codes if validation fails.
+  static ValidationResult _isValidACCircuit(const Circuit &circuit);
 };
 }; // namespace ocira::core
 
