@@ -35,10 +35,26 @@
 #define OCIRA_CORE_CIRCUIT_VALIDATOR_HPP
 
 namespace ocira::core {
+
+/// Forward declarations.
+class Circuit;
+struct ValidationResult;
+
+/// @brief Provides static methods for validating the structure of a circuit.
+/// This class cannot be instantiated.
 class CircuitValidator {
 public:
+  /// @brief Make the class non-instantiable.
+  CircuitValidator() = delete;
+
+  /// @brief Validates the structure of the given circuit.
+  /// Checks for connectivity, grounding, and component compatibility.
+  /// @param circuit Reference to the circuit to validate.
+  /// @return A ValidationResult containing error codes and diagnostics.
+  static ValidationResult isValidCircuit(const Circuit &circuit);
+
 private:
 };
 }; // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_CIRCUIT_VALIDATOR_HPP

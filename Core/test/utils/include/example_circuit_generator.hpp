@@ -34,20 +34,30 @@
 #ifndef OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP
 #define OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP
 
-#include "circuit.hpp"
-#include "component.hpp"
-#include <vector>
+#include <memory>
+
+namespace ocira::core {
+// Forward declarations.
+class Circuit;
+} // namespace ocira::core
 
 namespace ocira::core::test::utils {
 
-/// @brief ExampleCircuitGenerator class. Provides static functions to generate example circuits
-/// that can be used in unit tests.
+/// @brief Utility class for generating example circuits for testing purposes.
+/// This class provides static factory methods to create predefined circuit configurations.
 class ExampleCircuitGenerator {
 public:
-  /// @brief Returns example circuit 1. Circuit contains one resistor and one dc current source.
-  /// @return Example circuit 1.
-  static std::shared_ptr<Circuit> getExampleCircuit1();
+  /// @brief Make the class non-instantiable.
+  ExampleCircuitGenerator() = delete;
+
+  /// @brief Generates a simple example circuit.
+  /// The circuit contains:
+  /// - One resistor
+  /// - One DC current source
+  /// Useful for basic validation and simulation tests.
+  /// @return Shared pointer to the generated Circuit instance.
+  static std::shared_ptr<ocira::core::Circuit> getExampleCircuit1();
 };
 } // namespace ocira::core::test::utils
 
-#endif
+#endif // OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP

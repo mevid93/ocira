@@ -40,9 +40,7 @@ DCCurrentSource::DCCurrentSource(ComponentId id, float amps) : Component(id) {
   this->m_type = ComponentType::DC_CURRENT_SOURCE;
 }
 
-DCCurrentSource::~DCCurrentSource() {}
+float DCCurrentSource::getAmps() const noexcept { return this->m_amps; }
 
-float DCCurrentSource::getAmps() const { return this->m_amps; }
-
-void DCCurrentSource::setAmps(float amps) { this->m_amps = amps; }
+void DCCurrentSource::setAmps(float amps) noexcept { this->m_amps = amps; }
 } // namespace ocira::core

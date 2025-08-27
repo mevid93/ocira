@@ -38,31 +38,38 @@
 #include <cstdint>
 
 namespace ocira::core {
-class Resistor : public Component {
+
+/// @brief Represents a resistor component in the circuit.
+/// A resistor limits the flow of electric current between two buses.
+/// It is defined by its resistance value in ohms and contributes to
+/// voltage drops and power dissipation in circuit analysis.
+class Resistor final : public Component {
 public:
-  /// @brief Constructor.
-  /// @param id Component id.
-  /// @param resistance Resistor resistance value (Ohm);
+  /// @brief Constructs a resistor with a unique ID and resistance value.
+  /// @param id Unique identifier for the resistor.
+  /// @param resistance Resistance value in ohms.
   explicit Resistor(ComponentId id, float resistance);
 
-  /// @brief Destructor.
-  ~Resistor();
+  /// @brief Destructor for the resistor component.
+  /// Declared virtual to support polymorphic cleanup.
+  ~Resistor() override = default;
 
-  /// @brief Get resistor resistance.
-  /// @return Resistance.
-  float getResistance() const;
+  /// @brief Retrieves the resistance value of the resistor.
+  /// @return Resistance in ohms.
+  float getResistance() const noexcept;
 
-  /// @brief Get resistor conducance.
-  /// @return Conductance.
+  /// @brief Calculates and returns the conductance of the resistor.
+  /// Conductance is the reciprocal of resistance, measured in siemens.
+  /// @return Conductance in siemens.
   float getConductance() const;
 
-  /// @brief Set resistor resistance.
-  /// @param resistance Resistance.
-  void setResistance(float resistance);
+  /// @brief Updates the resistance value of the resistor.
+  /// @param resistance New resistance value in ohms.
+  void setResistance(float resistance) noexcept;
 
 private:
   float m_resistance;
 };
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_RESISTOR_HPP

@@ -34,46 +34,53 @@
 #ifndef OCIRA_CORE_CIRCUIT_TRANSFORMER_HPP
 #define OCIRA_CORE_CIRCUIT_TRANSFORMER_HPP
 
-#include "bus.hpp"
-#include "circuit.hpp"
-#include "dc_current_source.hpp"
-#include "resistor.hpp"
+#include "bus.hpp" // For BusId.
 #include <armadillo>
 #include <unordered_map>
 
 namespace ocira::core {
 
-/// @brief Bus number. Each bus that is used for admittance matrix has a unique bus number. Bus
-/// that is connected to ground always has bus number 0.
+// Forward declarations.
+class Circuit;
+class DCCurrentSource;
+class Resistor;
+
+/// @brief Unique identifier used for matrix computations.
+/// Each bus in the admittance matrix is assigned a sequential BusNumber.
+/// The ground bus is always assigned BusNumber 0.
 using BusNumber = uint32_t;
 
-/// @brief Circuit transformer class. Used to transform circuit into admittance matrix and current
-/// vector (Y * U = J). Voltage vector U is unknown.
+/// @brief Transforms a circuit into its mathematical representation for simulation.
+/// Converts the circuit into an admittance matrix (Y) and a current vector (J),
+/// forming the equation Y * U = J, where U is the unknown voltage vector.
 class CircuitTransformer {
 public:
-  /// @brief Constructor.
-  /// @param circuit Circuit to be transformed.
+  /// @brief Constructs a transformer for the given circuit.
+  /// Initializes internal data structures and prepares for matrix generation.
+  /// @param circuit Shared pointer to the circuit to be transformed.
   CircuitTransformer(const std::shared_ptr<Circuit> &circuit);
 
-  /// @brief Destructor.
-  ~CircuitTransformer();
+  /// @brief Default destructor.
+  ~CircuitTransformer() = default;
 
-  /// @brief Get admittance matrix.
-  /// @return Admittance matrix Y.
+  /// @brief Retrieves the computed admittance matrix Y.
+  /// Represents the conductance relationships between buses.
+  /// @return Shared pointer to the complex-valued admittance matrix.
   std::shared_ptr<arma::cx_mat> getAdmittanceMatrix() const;
 
-  /// @brief Get current vector.
-  /// @return Current vector J.
+  /// @brief Retrieves the computed current vector J.
+  /// Represents the net current injected into each bus.
+  /// @return Shared pointer to the complex-valued current vector.
   std::shared_ptr<arma::cx_vec> getCurrentVector() const;
 
-  /// @brief Each bus has an id, but for matrix computation we are using different numbering system.
-  /// This method returns a hash map, where each bus number is mapped to corresponding bus id.
-  /// @return Bus number to bus id mapping.
+  /// @brief Maps matrix bus numbers to their corresponding circuit bus IDs.
+  /// Useful for interpreting matrix results in terms of circuit topology.
+  /// @return Reference to the bus number → bus ID mapping.
   const std::unordered_map<BusNumber, BusId> &getBusNumberMap() const;
 
-  /// @brief Each bus has an id, but for matrix computation we are using different numbering system.
-  /// This method returns a hash map, where each bus id is mapped to corresponding bus number.
-  /// @return Bus id to bus number mapping.
+  /// @brief Maps circuit bus IDs to their corresponding matrix bus numbers.
+  /// Enables lookup of matrix indices based on circuit structure.
+  /// @return Reference to the bus ID → bus number mapping.
   const std::unordered_map<BusId, BusNumber> &getBusIdMap() const;
 
 private:
@@ -83,17 +90,17 @@ private:
   std::unordered_map<BusNumber, BusId> m_busNumberMap;
   std::unordered_map<BusId, BusNumber> m_busIdMap;
 
-  /// @brief Update Y matrix and J vector with circuit components.
+  /// @brief Populates the admittance matrix and current vector based on circuit components.
   void _transformComponents();
 
-  /// @brief Update Y matrix with resistor component.
-  /// @param resistor Resistor component to transform.
+  /// @brief Adds the contribution of a resistor to the admittance matrix.
+  /// @param resistor Shared pointer to the resistor component.
   void _transformResistor(std::shared_ptr<Resistor> resistor);
 
-  /// @brief Update Y vector with DC current source component.
-  /// @param dcCurrentSrc DC current source component to transform.
+  /// @brief Adds the contribution of a DC current source to the current vector.
+  /// @param dcCurrentSrc Shared pointer to the DC current source component.
   void _transformDCCurrentSource(std::shared_ptr<DCCurrentSource> dcCurrentSrc);
 };
 }; // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_CIRCUIT_TRANSFORMER_HPP

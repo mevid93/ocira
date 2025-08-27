@@ -36,17 +36,37 @@
 
 #include "circuit_enums.hpp"
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace ocira::core {
 
 class Bus;
 
-/// @brief Connection type. Each component can have connections to buses.
+/// @brief Represents a connection between a component and a bus within a circuit.
+/// Each connection specifies the bus being connected to and the role of the terminal.
 struct Connection {
   std::weak_ptr<Bus> bus;
   TerminalRole role;
 };
 
+/// @brief Describes a single validation error encountered during circuit analysis.
+/// Includes a human-readable message, an error code for programmatic handling,
+/// and an optional location string to pinpoint where the error occurred.
+struct ValidationError {
+  std::string message;
+  ValidationErrorCode code;
+  std::string location;
+};
+
+/// @brief Represents the outcome of a validation process.
+/// If the result is valid, no errors are present. Otherwise, the errors vector contains
+/// detailed information about each issue encountered.
+struct ValidationResult {
+  bool isValid;
+  std::vector<ValidationError> errors;
+};
+
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_CIRCUIT_STRUCTS_HPP

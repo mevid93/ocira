@@ -36,7 +36,8 @@
 
 namespace ocira::core {
 
-/// @brief Supported circuit component types.
+/// @brief Supported types of circuit components. Used to classify components during parsing,
+/// validation, and simulation.
 enum class ComponentType {
   AC_CURRENT_SOURCE,
   AC_VOLTAGE_SOURCE,
@@ -51,12 +52,29 @@ enum class ComponentType {
   WIRE,
 };
 
-/// @brief Different type of component terminals.
+/// @brief Defines the role of a terminal in a component.
+/// Typically used to determine polarity or connection direction.
 enum class TerminalRole { POSITIVE, NEGATIVE };
 
-/// @brief Different type of simulation modes.
+/// @brief Specifies the simulation mode for the circuit.
+/// Determines how components behave and which equations are applied.
 enum class SimulationMode { DC, AC };
+
+/// @brief Validation error codes for circuit analysis.
+/// Error codes are grouped by category:
+/// - 1000–1999: Structural errors (e.g., missing connections)
+/// - 2000–2999: Logical errors (e.g., conflicting components)
+/// - 3000–3999: Timing or simulation errors
+enum class ValidationErrorCode {
+  DUPLICATE_IDENTIFIER = 1001,
+  UNCONNECTED_BUS = 1002,
+  UNCONNECTED_COMPONENT = 1003,
+  MULTIPLE_CIRCUITS_INSTEAD_OF_ONE = 1004,
+  DC_CIRCUIT_CONTAINS_AC_COMPONENTS = 2000,
+  AC_CIRCUIT_CONTAINS_DC_COMPONENTS = 2001,
+  EARTH_COMPONENT_MISSING = 2002,
+};
 
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_CIRCUIT_ENUMS_HPP

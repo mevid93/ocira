@@ -32,12 +32,14 @@
 //==============================================================================
 
 #include "circuit.hpp"
+#include "bus.hpp"
+#include "component.hpp"
 
 namespace ocira::core {
 
-Circuit::Circuit() {}
+Circuit::Circuit() : m_simulationMode(SimulationMode::DC) {}
 
-Circuit::~Circuit() {}
+Circuit::Circuit(SimulationMode mode) : m_simulationMode(mode) {}
 
 const std::vector<std::shared_ptr<Component>> &Circuit::getComponents() const {
   return this->m_components;
@@ -50,4 +52,9 @@ void Circuit::setBuses(std::vector<std::shared_ptr<Bus>> buses) { this->m_buses 
 void Circuit::setComponents(std::vector<std::shared_ptr<Component>> components) {
   this->m_components = components;
 }
+
+void Circuit::setSimulationMode(SimulationMode mode) { this->m_simulationMode = mode; }
+
+SimulationMode Circuit::getSimulationMode() const { return this->m_simulationMode; }
+
 } // namespace ocira::core

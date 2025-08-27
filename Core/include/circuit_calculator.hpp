@@ -43,4 +43,4 @@ private:
 };
 }; // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_CIRCUIT_CALCULATOR_HPP

@@ -10,5 +10,9 @@
     ],
     "workbench.colorCustomizations": {
         "editorRuler.foreground": "#ff4081"
+    },
+    "files.associations": {
+        ".fantomasignore": "ignore",
+        "memory": "cpp"
     }
 }

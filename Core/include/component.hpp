@@ -40,51 +40,53 @@
 
 namespace ocira::core {
 
+// Forward declarations.
 class Bus;
 
-/// @brief Component id. Each component should have a unique id.
+/// @brief Unique identifier for a circuit component.
 using ComponentId = uint32_t;
 
-/// @brief Base component class. Components are edges in circuit graph.
+/// @brief Abstract base class representing a circuit component.
+/// Components act as edges in the circuit graph, connecting buses (nodes).
 class Component {
 public:
-  /// @brief Constructor.
-  /// @param id Component id.
-  explicit Component(const ComponentId id);
+  /// @brief Constructs a component with a unique identifier.
+  /// @param id Unique component ID.
+  explicit Component(ComponentId id);
 
-  /// @brief Destructor.
-  ~Component();
+  /// @brief Virtual destructor to support polymorphic deletion.
+  virtual ~Component();
 
-  /// @brief Returns component id.
-  /// @return Component id.
+  /// @brief Retrieves the component's unique identifier.
+  /// @return Component ID.
   ComponentId getId() const;
 
-  /// @brief Returns component type.
-  /// @return Component type.
+  /// @brief Retrieves the type of the component.
+  /// @return Component type (e.g., resistor, source).
   ComponentType getComponentType() const;
 
-  /// @brief Connect component to a bus.
-  /// @param bus Bus to connect.
-  /// @param role Terminel role of the new connection.
-  /// @return True if bus was connected. False otherwise.
+  /// @brief Connects the component to a bus with a specified terminal role.
+  /// @param bus Weak pointer to the bus to connect.
+  /// @param role Terminal role (positive or negative).
+  /// @return True if the connection was successful; false if already connected.
   virtual bool addConnection(std::weak_ptr<Bus> bus, TerminalRole role);
 
-  /// @brief Remove connection from component.
-  /// @param bus Bus to disconnect.
-  /// @return True if bus was disconnected. False otherwise.
+  /// @brief Removes the connection to a specified bus.
+  /// @param bus Weak pointer to the bus to disconnect.
+  /// @return True if the connection was removed; false if not found.
   bool removeConnection(std::weak_ptr<Bus> bus);
 
-  /// @brief Check if component is connected to the bus.
-  /// @param bus Bus to check.
-  /// @return True if component is connected to bus. False otherwise.
+  /// @brief Checks whether the component is connected to a given bus.
+  /// @param bus Weak pointer to the bus to check.
+  /// @return True if connected; false otherwise.
   bool isConnectedToBus(std::weak_ptr<Bus> bus) const;
 
-  /// @brief Get connections to buses.
-  /// @return Connections to buses.
+  /// @brief Retrieves all connections to buses.
+  /// @return Const reference to the vector of connections.
   const std::vector<Connection> &getConnections() const;
 
 protected:
-  ComponentType m_type;
+  ComponentType m_type = ComponentType::UNDEFINED;
   std::vector<Connection> m_connections;
 
 private:
@@ -92,4 +94,4 @@ private:
 };
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_COMPONENT_HPP

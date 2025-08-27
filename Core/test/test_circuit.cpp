@@ -27,7 +27,9 @@
 // - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=circuit.*
 //==============================================================================
 
+#include "bus.hpp"
 #include "circuit.hpp"
+#include "component.hpp"
 #include <gtest/gtest.h>
 #include <memory>
 
@@ -37,6 +39,16 @@ using namespace ocira::core;
 TEST(circuit, constructor_works) {
   // Create new circuit.
   Circuit circuit;
+  // Verify results.
+  EXPECT_EQ(circuit.getSimulationMode(), SimulationMode::DC);
+}
+
+/// @brief Test Circuit class constructor that takes simulation mode as parameter.
+TEST(circuit, constructor_works_with_simulation_mode) {
+  // Create new circuit.
+  Circuit circuit(SimulationMode::AC);
+  // Verify results.
+  EXPECT_EQ(circuit.getSimulationMode(), SimulationMode::AC);
 }
 
 /// @brief Test setting circuit components.

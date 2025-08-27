@@ -32,6 +32,9 @@
 //==============================================================================
 
 #include "circuit_transformer.hpp"
+#include "circuit.hpp"
+#include "dc_current_source.hpp"
+#include "resistor.hpp"
 
 namespace ocira::core {
 
@@ -69,8 +72,6 @@ CircuitTransformer::CircuitTransformer(const std::shared_ptr<Circuit> &circuit)
   // 3. Loop through the components and update the G matrix and J vector.
   this->_transformComponents();
 }
-
-CircuitTransformer::~CircuitTransformer() {}
 
 std::shared_ptr<arma::cx_mat> CircuitTransformer::getAdmittanceMatrix() const { return this->m_Y; }
 

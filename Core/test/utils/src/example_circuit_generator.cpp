@@ -32,6 +32,7 @@
 //==============================================================================
 
 #include "example_circuit_generator.hpp"
+#include "bus.hpp"
 #include "circuit.hpp"
 #include "component.hpp"
 #include "dc_current_source.hpp"
@@ -41,7 +42,7 @@
 
 namespace ocira::core::test::utils {
 
-std::shared_ptr<Circuit> ExampleCircuitGenerator::getExampleCircuit1() {
+std::shared_ptr<ocira::core::Circuit> ExampleCircuitGenerator::getExampleCircuit1() {
   std::shared_ptr<Circuit> circuit = std::make_shared<Circuit>();
   std::shared_ptr<DCCurrentSource> dcCurrentSrc = std::make_shared<DCCurrentSource>(1, 1.0);
   std::shared_ptr<Resistor> resistor = std::make_shared<Resistor>(2, 200);

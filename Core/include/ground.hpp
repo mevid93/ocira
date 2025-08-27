@@ -39,24 +39,27 @@
 
 namespace ocira::core {
 
-/// @brief Ground component model. Each circuit should have exactly one ground component.
-class Ground : public Component {
+/// @brief Represents the ground in a circuit. The ground component serves as the reference point
+/// for voltage calculations. Every circuit should contain exactly one ground, which connects to a
+/// single bus. It typically defines the zero-voltage level in circuit analysis.
+class Ground final : public Component {
 public:
-  /// @brief Constructor.
-  /// @param id Component id.
+  /// @brief Constructs a ground component with a unique ID.
+  /// @param id Unique identifier for the ground component.
   explicit Ground(ComponentId id);
 
-  /// @brief Destructor.
-  ~Ground();
+  /// @brief Destructor for the ground component.
+  /// Declared virtual to support polymorphic cleanup.
+  ~Ground() override = default;
 
-  /// @brief
-  /// @param bus Bus to connect.
+  /// @brief Connects the ground to a bus. Ground should only connect to one bus.
+  /// @param bus Weak pointer to the bus to connect.
   /// @param role Terminal role of the connection.
-  /// @return True if connection was added. False otherwise.
+  /// @return True if the connection was successfully added; false otherwise.
   bool addConnection(std::weak_ptr<Bus> bus, TerminalRole role) override;
 
 private:
 };
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_GROUND_HPP

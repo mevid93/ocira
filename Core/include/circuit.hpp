@@ -34,42 +34,59 @@
 #ifndef OCIRA_CORE_CIRCUIT_HPP
 #define OCIRA_CORE_CIRCUIT_HPP
 
-#include "bus.hpp"
-#include "component.hpp"
+#include "circuit_enums.hpp"
 #include <memory>
 #include <vector>
 
 namespace ocira::core {
 
-/// @brief Circuit class.
+// Forward declarations.
+class Bus;
+class Component;
+
+/// @brief Represents an electrical circuit composed of components and buses.
+/// Supports both DC and AC simulation modes.
 class Circuit {
 public:
-  /// @brief Constructor.
-  explicit Circuit();
+  /// @brief Default constructor. Initializes with default DC simulation mode.
+  Circuit();
 
-  /// @brief Destructor.
-  ~Circuit();
+  /// @brief Constructs a circuit with a specified simulation mode.
+  /// @param mode Simulation mode (DC or AC).
+  explicit Circuit(SimulationMode mode);
 
-  /// @brief Get circuit components.
-  /// @return Circuit components.
+  /// @brief Default destructor.
+  ~Circuit() = default;
+
+  /// @brief Returns the list of components in the circuit.
+  /// @return Const reference to the vector of components.
   const std::vector<std::shared_ptr<Component>> &getComponents() const;
 
-  /// @brief Get circuit buses.
-  /// @return Circuit buses.
+  /// @brief Returns the list of buses in the circuit.
+  /// @return Const reference to the vector of buses.
   const std::vector<std::shared_ptr<Bus>> &getBuses() const;
 
-  /// @brief Set circuit buses.
-  /// @param buses Circuit buses.
+  /// @brief Sets the buses for the circuit.
+  /// @param buses Vector of shared pointers to Bus objects.
   void setBuses(std::vector<std::shared_ptr<Bus>> buses);
 
-  /// @brief Set circuit components.
-  /// @param components Circuit components.
+  /// @brief Sets the components for the circuit.
+  /// @param components Vector of shared pointers to Component objects.
   void setComponents(std::vector<std::shared_ptr<Component>> components);
+
+  /// @brief Sets the simulation mode for the circuit.
+  /// @param mode Simulation mode (DC or AC).
+  void setSimulationMode(SimulationMode mode);
+
+  /// @brief Gets the current simulation mode of the circuit.
+  /// @return Simulation mode.
+  SimulationMode getSimulationMode() const;
 
 private:
   std::vector<std::shared_ptr<Bus>> m_buses;
   std::vector<std::shared_ptr<Component>> m_components;
+  SimulationMode m_simulationMode;
 };
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_CIRCUIT_HPP

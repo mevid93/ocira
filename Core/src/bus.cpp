@@ -32,17 +32,16 @@
 //==============================================================================
 
 #include "bus.hpp"
+#include "component.hpp"
 #include <algorithm>
 
 namespace ocira::core {
 
 Bus::Bus(BusId id) : m_id(id) { this->m_components = std::vector<std::shared_ptr<Component>>(); }
 
-Bus::~Bus() {}
+BusId Bus::getId() const noexcept { return this->m_id; }
 
-BusId Bus::getId() const { return this->m_id; }
-
-bool Bus::connectComponent(std::shared_ptr<Component> component) {
+bool Bus::connectComponent(const std::shared_ptr<Component> &component) {
   bool exists = this->isConnectedToComponent(component);
 
   // If already connected, then do not connect again.
@@ -55,7 +54,7 @@ bool Bus::connectComponent(std::shared_ptr<Component> component) {
   return true;
 }
 
-bool Bus::disconnectComponent(std::shared_ptr<Component> component) {
+bool Bus::disconnectComponent(const std::shared_ptr<Component> &component) {
   auto originalSize = this->m_components.size();
 
   // Delete components that have same id as target component.
@@ -72,11 +71,11 @@ const std::vector<std::shared_ptr<Component>> &Bus::getComponents() const {
   return this->m_components;
 }
 
-bool Bus::isConnectedToComponent(std::shared_ptr<Component> component) const {
+bool Bus::isConnectedToComponent(const std::shared_ptr<Component> &component) const {
   return std::any_of(
       this->m_components.begin(), this->m_components.end(),
       [&](const std::shared_ptr<Component> &c) { return c && c->getId() == component->getId(); });
 }
 
-uint32_t Bus::getNumberOfComponents() const { return this->m_components.size(); }
+uint32_t Bus::getNumberOfComponents() const noexcept { return this->m_components.size(); }
 } // namespace ocira::core

@@ -1,9 +1,9 @@
 //==============================================================================
 // Project:     OCIRA (core library)
-// File:        dc_current_source.hpp
+// File:        circuit_validator.cpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: DC current source component.
+// Description: Circuit validation logic.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -31,40 +31,12 @@
 // - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#ifndef OCIRA_CORE_DC_CURRENT_SOURCE_HPP
-#define OCIRA_CORE_DC_CURRENT_SOURCE_HPP
-
-#include "component.hpp"
-#include <cstdint>
+#include "circuit_validator.hpp"
+#include "circuit.hpp"
+#include "circuit_structs.hpp"
 
 namespace ocira::core {
 
-/// @brief Represents a DC current source in the circuit. A DC current source maintains a constant
-/// current flow between two terminals. It acts as an edge in the circuit graph, connecting two
-/// buses with a defined current. This component is used in circuit analysis to model ideal current
-/// sources.
-class DCCurrentSource final : public Component {
-public:
-  /// @brief Constructs a DC current source with a unique ID and current value.
-  /// @param id Unique identifier for the component.
-  /// @param amps Constant current value in amperes.
-  explicit DCCurrentSource(ComponentId id, float amps);
+ValidationResult CircuitValidator::isValidCircuit(const Circuit &circuit) {}
 
-  /// @brief Destructor for the DC current source.
-  /// Declared virtual to ensure proper cleanup when using polymorphism.
-  ~DCCurrentSource() override = default;
-
-  /// @brief Retrieves the current value of the source.
-  /// @return Current in amperes.
-  float getAmps() const noexcept;
-
-  /// @brief Updates the current value of the source.
-  /// @param amps New current value in amperes.
-  void setAmps(float amps) noexcept;
-
-private:
-  float m_amps;
-};
 } // namespace ocira::core
-
-#endif // OCIRA_CORE_DC_CURRENT_SOURCE_HPP

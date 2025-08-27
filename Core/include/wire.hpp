@@ -39,18 +39,23 @@
 
 namespace ocira::core {
 
-/// @brief A wire component class. Basically just a ideal short circuit.
-class Wire : public Component {
+/// @brief Represents an ideal wire component in the circuit simulation.
+/// This class models a perfect conductor with zero resistance, effectively
+/// acting as a short circuit between connected nodes. It inherits from the
+/// Component base class and overrides relevant behavior to reflect its ideal nature.
+class Wire final : public Component {
 public:
-  /// @brief Constructor for Wire class.
-  /// @param id Component id.
+  /// @brief Constructs a Wire component with a unique identifier.
+  /// Typically used to connect circuit nodes without introducing any resistance or delay.
+  /// @param id The unique ID assigned to this wire instance.
   explicit Wire(ComponentId id);
 
-  /// @brief Destructor.
-  ~Wire();
+  /// @brief Destructor for Wire.
+  /// Declared virtual to support polymorphic cleanup.
+  ~Wire() override = default;
 
 private:
 };
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_WIRE_HPP

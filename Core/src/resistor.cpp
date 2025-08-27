@@ -32,6 +32,7 @@
 //==============================================================================
 
 #include "resistor.hpp"
+#include <stdexcept>
 
 namespace ocira::core {
 
@@ -40,12 +41,16 @@ Resistor::Resistor(ComponentId id, float resistance) : Component(id) {
   this->m_resistance = resistance;
 }
 
-Resistor::~Resistor(){};
+float Resistor::getResistance() const noexcept { return this->m_resistance; }
 
-float Resistor::getResistance() const { return this->m_resistance; }
+float Resistor::getConductance() const {
+  if (this->m_resistance == 0.0f) {
+    throw std::runtime_error("Conductance is undefined for zero resistance.");
+  }
 
-float Resistor::getConductance() const { return 1 / this->m_resistance; }
+  return 1.0f / this->m_resistance;
+}
 
-void Resistor::setResistance(float resistance) { this->m_resistance = resistance; }
+void Resistor::setResistance(float resistance) noexcept { this->m_resistance = resistance; }
 
 } // namespace ocira::core

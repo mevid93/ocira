@@ -36,7 +36,7 @@
 #include <algorithm>
 
 namespace ocira::core {
-Component::Component(ComponentId id) : m_id(id) { this->m_type = ComponentType::UNDEFINED; }
+Component::Component(ComponentId id) : m_id(id) {}
 
 Component::~Component() {}
 

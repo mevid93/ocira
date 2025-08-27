@@ -34,50 +34,57 @@
 #ifndef OCIRA_CORE_BUS_HPP
 #define OCIRA_CORE_BUS_HPP
 
-#include "component.hpp"
+#include <memory>
 #include <vector>
 
 namespace ocira::core {
 
-/// @brief Bus id. Each bus in a circuit should have a unique identifier.
+// Forward declarations.
+class Component;
+
+/// @brief Unique identifier for a bus in a circuit.
+/// Each bus must have a distinct BusId.
 using BusId = uint32_t;
 
-/// @brief Bus class. These are the junctions in a circuit graph.
+/// @brief Represents a junction point in an electrical circuit.
+/// A Bus connects multiple components and serves as a node in the circuit graph.
 class Bus {
 public:
-  /// @brief Constructor.
-  /// @param id Bus id.
+  /// @brief Constructs a bus with a given identifier.
+  /// @param id Unique identifier for the bus.
   explicit Bus(BusId id);
 
-  /// @brief Destructor.
-  ~Bus();
+  /// @brief Default destructor.
+  ~Bus() = default;
 
-  /// @brief Returns bus id.
-  /// @return Bus id.
-  BusId getId() const;
+  /// @brief Retrieves the unique identifier of the bus.
+  /// @return BusId associated with this bus.
+  BusId getId() const noexcept;
 
-  /// @brief Connect a new component to the bus.
-  /// @param component Component to connect.
-  /// @return True if component was connected. False otherwise.
-  bool connectComponent(std::shared_ptr<Component> component);
+  /// @brief Connects a component to this bus.
+  /// Adds the component to the internal list if it's not already connected.
+  /// @param component Shared pointer to the component to connect.
+  /// @return True if the component was successfully connected; false if already connected.
+  bool connectComponent(const std::shared_ptr<Component> &component);
 
-  /// @brief Disconnet a component from the bus.
-  /// @param component Component to diconnect.
-  /// @return True if component was disconnected. False otherwise.
-  bool disconnectComponent(std::shared_ptr<Component> component);
+  /// @brief Disconnects a component from this bus.
+  /// Removes the component from the internal list if it exists.
+  /// @param component Shared pointer to the component to disconnect.
+  /// @return True if the component was successfully disconnected; false if not found.
+  bool disconnectComponent(const std::shared_ptr<Component> &component);
 
-  /// @brief Get all components that are connected to the bus.
-  /// @return Connected components.
+  /// @brief Returns all components currently connected to this bus.
+  /// @return Const reference to the vector of connected components.
   const std::vector<std::shared_ptr<Component>> &getComponents() const;
 
-  /// @brief Check if bus is connected to given component.
-  /// @param component Component to check connection with.
-  /// @return True if bus is connected to the component. False otherwise.
-  bool isConnectedToComponent(std::shared_ptr<Component> component) const;
+  /// @brief Checks whether a specific component is connected to this bus.
+  /// @param component Shared pointer to the component to check.
+  /// @return True if the component is connected; false otherwise.
+  bool isConnectedToComponent(const std::shared_ptr<Component> &component) const;
 
-  /// @brief Get the number of connected components.
-  /// @return Number of connected components.
-  uint32_t getNumberOfComponents() const;
+  /// @brief Returns the total number of components connected to this bus.
+  /// @return Count of connected components.
+  uint32_t getNumberOfComponents() const noexcept;
 
 private:
   BusId m_id;
@@ -85,4 +92,4 @@ private:
 };
 } // namespace ocira::core
 
-#endif
+#endif // OCIRA_CORE_BUS_HPP

@@ -37,8 +37,6 @@ namespace ocira::core {
 
 Ground::Ground(ComponentId id) : Component(id) { this->m_type = ComponentType::GROUND; }
 
-Ground::~Ground() {}
-
 bool Ground::addConnection(std::weak_ptr<Bus> bus, TerminalRole role) {
   if (this->m_connections.size() == 1) {
     return false;
