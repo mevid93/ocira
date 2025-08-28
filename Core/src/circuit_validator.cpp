@@ -122,7 +122,7 @@ void CircuitValidator::_validateSimulationModeCompatibility(const Circuit &circu
       case ComponentType::DC_VOLTAGE_SOURCE:
       case ComponentType::UNDEFINED: {
         result.isValid = false;
-        result.errors.push_back({"Incompatible component for DC simulation mode.",
+        result.errors.push_back({"Incompatible component for AC simulation mode.",
                                  ValidationErrorCode::INCOMPATIBLE_COMPONENT_FOR_DC_SIMULATION,
                                  "Component - " + component->getId()});
       }
