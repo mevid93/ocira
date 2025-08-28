@@ -64,12 +64,12 @@ CircuitTransformer::CircuitTransformer(const std::shared_ptr<Circuit> &circuit)
     indice++;
   }
 
-  // 2. Initialize G matrix and J vector.
+  // 2. Initialize Y matrix and J vector.
   uint32_t n = indice;
   this->m_Y = std::make_shared<arma::cx_mat>(n - 1, n - 1, arma::fill::zeros);
   this->m_J = std::make_shared<arma::cx_vec>(n - 1, arma::fill::zeros);
 
-  // 3. Loop through the components and update the G matrix and J vector.
+  // 3. Loop through the components and update the Y matrix and J vector.
   this->_transformComponents();
 }
 
