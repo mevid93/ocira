@@ -131,3 +131,17 @@ TEST(bus, get_number_of_components) {
   EXPECT_EQ(components, 0);
   EXPECT_EQ(components2, 1);
 }
+
+/// @brief Test that connectivity check works.
+TEST(bus, is_connected) {
+  // Create a new Bus object.
+  Bus bus(1);
+  // Perform first check.
+  EXPECT_FALSE(bus.isConnected());
+  // Create new component object.
+  auto component = std::make_shared<Component>(1);
+  // Connect component to bus.
+  bus.connectComponent(component);
+  // Perform second check.
+  EXPECT_TRUE(bus.isConnected());
+}

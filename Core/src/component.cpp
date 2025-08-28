@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-26 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -94,4 +94,6 @@ bool Component::isConnectedToBus(std::weak_ptr<Bus> bus) const {
 }
 
 const std::vector<Connection> &Component::getConnections() const { return this->m_connections; }
+
+bool Component::isConnected() const { return this->m_connections.size() == 2; }
 } // namespace ocira::core

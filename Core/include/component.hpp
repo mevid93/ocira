@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-26 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -84,6 +84,10 @@ public:
   /// @brief Retrieves all connections to buses.
   /// @return Const reference to the vector of connections.
   const std::vector<Connection> &getConnections() const;
+
+  /// @brief Determines whether the component is fully connected to all required buses.
+  /// @return True if the component is fully connected; false otherwise.
+  virtual bool isConnected() const;
 
 protected:
   ComponentType m_type = ComponentType::UNDEFINED;

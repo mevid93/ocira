@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-26 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -85,6 +85,10 @@ public:
   /// @brief Returns the total number of components connected to this bus.
   /// @return Count of connected components.
   uint32_t getNumberOfComponents() const noexcept;
+
+  /// @brief Checks whether a bus is connected to any component or not.
+  /// @return True if bus is connected to any component, false otherwise.
+  bool isConnected() const noexcept;
 
 private:
   BusId m_id;

@@ -2,7 +2,7 @@
 // Project:     OCIRA (core library)
 // File:        circuit_validator.hpp
 // Author:      Martin Vidjeskog
-// Created:     2025-08-26
+// Created:     2025-08-28
 // Description: Circuit validation logic.
 // License:     GNU General Public License v3.0
 //==============================================================================
@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-28 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -54,19 +54,31 @@ public:
   static ValidationResult isValidCircuit(const Circuit &circuit);
 
 private:
-  /// @brief Performs validation checks specific to DC circuits.
-  /// Ensures all components are properly connected, grounded and that the circuit forms a closed
-  /// loop.
-  /// @param circuit Reference to the Circuit object.
-  /// @return ValidationResult with diagnostics and error codes if validation fails.
-  static ValidationResult _isValidDCCircuit(const Circuit &circuit);
+  /// @brief Validates that every bus in the circuit is properly connected to at least one
+  /// component. Flags any buses that are left unconnected or floating, which may indicate design
+  /// errors.
+  /// @param circuit The circuit structure containing buses and components.
+  /// @param result  The validation result object used to collect errors and warnings.
+  static void _validateBusConnections(const Circuit &circuit, ValidationResult &result);
 
-  /// @brief Performs validation checks specific to AC circuits.
-  /// Ensures all components are properly connected, grounded and that the circuit forms a closed
-  /// loop.
-  /// @param circuit Reference to the Circuit object.
-  /// @return ValidationResult with diagnostics and error codes if validation fails.
-  static ValidationResult _isValidACCircuit(const Circuit &circuit);
+  /// @brief Validates that all components within the circuit are properly connected to their
+  /// required buses. Detects and reports any components with missing or incmplete connections.
+  /// @param circuit The circuit model containing components and their connectivity data.
+  /// @param result  The validation result object used to collect errors and warnings.
+  static void _validateComponentConnections(const Circuit &circuit, ValidationResult &result);
+
+  /// @brief Validates the grounding configuration of the circuit to ensure that circuit has exactly
+  /// one ground component.
+  /// @param circuit The circuit model containing components and their connectivity data.
+  /// @param result  The validation result object used to collect errors and warnings.
+  static void _validateGround(const Circuit &circuit, ValidationResult &result);
+
+  /// @brief Validates that all components in the circuit support the circuit's simulation mode (AC
+  /// or DC).
+  /// @param circuit The circuit model containing components and their connectivity data.
+  /// @param result  The validation result object used to collect errors and warnings.
+  static void _validateSimulationModeCompatibility(const Circuit &circuit,
+                                                   ValidationResult &result);
 };
 }; // namespace ocira::core
 

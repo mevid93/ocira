@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-26 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -78,4 +78,6 @@ bool Bus::isConnectedToComponent(const std::shared_ptr<Component> &component) co
 }
 
 uint32_t Bus::getNumberOfComponents() const noexcept { return this->m_components.size(); }
+
+bool Bus::isConnected() const noexcept { return !this->m_components.empty(); }
 } // namespace ocira::core

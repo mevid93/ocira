@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-26 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -46,4 +46,6 @@ bool Ground::addConnection(std::weak_ptr<Bus> bus, TerminalRole role) {
   this->m_connections.push_back(connection);
   return true;
 }
+
+bool Ground::isConnected() const { return this->m_connections.size() == 1; }
 } // namespace ocira::core

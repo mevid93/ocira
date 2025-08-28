@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-26 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -70,9 +70,9 @@ enum class ValidationErrorCode {
   UNCONNECTED_BUS = 1002,
   UNCONNECTED_COMPONENT = 1003,
   MULTIPLE_CIRCUITS_INSTEAD_OF_ONE = 1004,
-  DC_CIRCUIT_CONTAINS_AC_COMPONENTS = 2000,
-  AC_CIRCUIT_CONTAINS_DC_COMPONENTS = 2001,
-  EARTH_COMPONENT_MISSING = 2002,
+  GROUND_COMPONENT_MISSING = 1005,
+  INCOMPATIBLE_COMPONENT_FOR_DC_SIMULATION = 2000,
+  INCOMPATIBLE_COMPONENT_FOR_AC_SIMULATION = 2001,
 };
 
 } // namespace ocira::core

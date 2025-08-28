@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-25 Martin Vidjeskog: Initial creation
+// - 2025-08-26 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -57,6 +57,10 @@ public:
   /// @param role Terminal role of the connection.
   /// @return True if the connection was successfully added; false otherwise.
   bool addConnection(std::weak_ptr<Bus> bus, TerminalRole role) override;
+
+  /// @brief Checks whether the component is fully connected to all required buses.
+  /// @return True if the component meets all connection requirements; false otherwise.
+  virtual bool isConnected() const override;
 
 private:
 };
