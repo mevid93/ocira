@@ -90,6 +90,10 @@ public:
   /// @return True if bus is connected to any component, false otherwise.
   bool isConnected() const noexcept;
 
+  /// @brief Retrieves buses that are connected to this bus via components.
+  /// @return A vector of weak pointers to buses linked through at least one component.
+  const std::vector<std::weak_ptr<Bus>> getNeighborBuses() const;
+
 private:
   BusId m_id;
   std::vector<std::shared_ptr<Component>> m_components;

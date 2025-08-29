@@ -34,6 +34,7 @@
 #include "bus.hpp"
 #include "component.hpp"
 #include <algorithm>
+#include <unordered_set>
 
 namespace ocira::core {
 
@@ -80,4 +81,24 @@ bool Bus::isConnectedToComponent(const std::shared_ptr<Component> &component) co
 uint32_t Bus::getNumberOfComponents() const noexcept { return this->m_components.size(); }
 
 bool Bus::isConnected() const noexcept { return !this->m_components.empty(); }
+
+const std::vector<std::weak_ptr<Bus>> Bus::getNeighborBuses() const {
+  std::vector<std::weak_ptr<Bus>> buses;
+  std::unordered_set<BusId> seenBusIds;
+
+  for (auto component : this->m_components) {
+    for (auto connection : component->getConnections()) {
+      std::weak_ptr<Bus> bus = connection.bus;
+
+      if (auto b = bus.lock()) {
+        BusId id = b->getId();
+        if (id != this->m_id && seenBusIds.insert(id).second) {
+          buses.push_back(bus);
+        }
+      }
+    }
+  }
+
+  return buses;
+}
 } // namespace ocira::core

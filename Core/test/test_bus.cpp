@@ -145,3 +145,22 @@ TEST(bus, is_connected) {
   // Perform second check.
   EXPECT_TRUE(bus.isConnected());
 }
+
+/// @brief Test that neighbor buses are returned.
+TEST(bus, get_neighbor_buses) {
+  // Create buses and components.
+  std::shared_ptr<Bus> bus1 = std::make_shared<Bus>(1);
+  std::shared_ptr<Bus> bus2 = std::make_shared<Bus>(2);
+  std::shared_ptr<Component> component1 = std::make_shared<Component>(1);
+  std::shared_ptr<Component> component2 = std::make_shared<Component>(2);
+  // Connect components with buses.
+  component1->addConnection(bus2, TerminalRole::POSITIVE);
+  component2->addConnection(bus2, TerminalRole::POSITIVE);
+  bus1->connectComponent(component1);
+  bus2->connectComponent(component2);
+  // Get list of neighbor buses for bus1.
+  auto neigbors = bus1->getNeighborBuses();
+  // Validate results.
+  EXPECT_FALSE(neigbors.empty());
+  EXPECT_EQ(neigbors.at(0).lock()->getId(), 2);
+}

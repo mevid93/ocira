@@ -79,6 +79,17 @@ private:
   /// @param result  The validation result object used to collect errors and warnings.
   static void _validateSimulationModeCompatibility(const Circuit &circuit,
                                                    ValidationResult &result);
+
+  /// @brief Validates that all buses and components in the circuit have unique identifiers.
+  /// @param circuit The circuit model containing buses, components, and their connectivity data.
+  /// @param result  The validation result object used to collect errors and warnings.
+  static void _validateUniqueIds(const Circuit &circuit, ValidationResult &result);
+
+  /// @brief Validates that all buses in the circuit are reachable from one another, ensuring full
+  /// connectivity.
+  /// @param circuit The circuit model containing buses, components, and their connectivity data.
+  /// @param result  The validation result object used to collect errors and warnings.
+  static void _validateConnectivity(const Circuit &circuit, ValidationResult &result);
 };
 }; // namespace ocira::core
 

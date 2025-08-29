@@ -36,6 +36,7 @@
 #include "circuit.hpp"
 #include "circuit_structs.hpp"
 #include "component.hpp"
+#include <unordered_set>
 
 namespace ocira::core {
 
@@ -53,6 +54,12 @@ ValidationResult CircuitValidator::isValidCircuit(const Circuit &circuit) {
 
   // 4. Check that all components support the circuit's simulation mode.
   _validateSimulationModeCompatibility(circuit, result);
+
+  // 5. Check that all buses and components have unique identifiers.
+  _validateUniqueIds(circuit, result);
+
+  // 6. Check the full connectivity of the circuit.
+  _validateConnectivity(circuit, result);
 
   // Additional checks here...
 
@@ -132,4 +139,66 @@ void CircuitValidator::_validateSimulationModeCompatibility(const Circuit &circu
     }
   }
 }
+
+void CircuitValidator::_validateUniqueIds(const Circuit &circuit, ValidationResult &result) {
+  // Validate unique identifiers among buses.
+  std::unordered_set<BusId> seenBusIds;
+
+  for (const std::shared_ptr<Bus> &bus : circuit.getBuses()) {
+    const BusId busId = bus->getId();
+
+    if (seenBusIds.find(busId) != seenBusIds.end()) {
+      result.isValid = false;
+      result.errors.push_back({"Duplicate bus ID detected.",
+                               ValidationErrorCode::DUPLICATE_IDENTIFIER, "Bus - " + busId});
+    } else {
+      seenBusIds.insert(busId);
+    }
+  }
+
+  // Validate unique identifiers among components.
+  std::unordered_set<BusId> seenComponentIds;
+
+  for (const std::shared_ptr<Component> &component : circuit.getComponents()) {
+    const BusId componentId = component->getId();
+
+    if (seenComponentIds.find(componentId) != seenComponentIds.end()) {
+      result.isValid = false;
+      result.errors.push_back({"Duplicate component ID detected.",
+                               ValidationErrorCode::DUPLICATE_IDENTIFIER,
+                               "Component - " + componentId});
+    } else {
+      seenComponentIds.insert(componentId);
+    }
+  }
+}
+
+static void dfs(const std::weak_ptr<Bus> &bus, const Circuit &circuit,
+                std::unordered_set<int> &visited) {
+  if (auto b = bus.lock()) {
+    if (visited.count(b->getId()))
+      return;
+
+    visited.insert(b->getId());
+    for (const auto &neighbor : b->getNeighborBuses()) {
+      dfs(neighbor, circuit, visited);
+    }
+  }
+}
+
+void CircuitValidator::_validateConnectivity(const Circuit &circuit, ValidationResult &result) {
+  std::unordered_set<int> visited;
+  if (circuit.getBuses().empty())
+    return;
+
+  // Start DFS from the first bus to check full connectivity
+  dfs(std::weak_ptr<Bus>(circuit.getBuses().at(0)), circuit, visited);
+
+  if (visited.size() != circuit.getBuses().size()) {
+    result.isValid = false;
+    result.errors.push_back({"Circuit contains buses that are not reachable from one another.",
+                             ValidationErrorCode::CIRCUIT_NOT_FULLY_CONNECTED, ""});
+  }
+}
+
 } // namespace ocira::core
