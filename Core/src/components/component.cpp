@@ -35,7 +35,8 @@
 #include "bus.hpp"
 #include <algorithm>
 
-namespace ocira::core {
+namespace ocira::core::components {
+
 Component::Component(ComponentId id) : m_id(id) {}
 
 Component::~Component() {}
@@ -96,4 +97,4 @@ bool Component::isConnectedToBus(std::weak_ptr<Bus> bus) const {
 const std::vector<Connection> &Component::getConnections() const { return this->m_connections; }
 
 bool Component::isConnected() const { return this->m_connections.size() == 2; }
-} // namespace ocira::core
+} // namespace ocira::core::components

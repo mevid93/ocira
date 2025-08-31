@@ -1,9 +1,9 @@
 //==============================================================================
 // Project:     OCIRA (core library)
-// File:        wire.cpp
+// File:        dc_current_source.cpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Wire component model.
+// Description: DC current source component.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -31,10 +31,16 @@
 // - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#include "wire.hpp"
+#include "dc_current_source.hpp"
 
-namespace ocira::core {
+namespace ocira::core::components {
 
-Wire::Wire(ComponentId id) : Component(id) { this->m_type = ComponentType::WIRE; }
+DCCurrentSource::DCCurrentSource(ComponentId id, float amps) : Component(id) {
+  this->m_amps = amps;
+  this->m_type = ComponentType::DC_CURRENT_SOURCE;
+}
 
-} // namespace ocira::core
+float DCCurrentSource::getAmps() const noexcept { return this->m_amps; }
+
+void DCCurrentSource::setAmps(float amps) noexcept { this->m_amps = amps; }
+} // namespace ocira::core::components

@@ -40,9 +40,12 @@
 #include "resistor.hpp"
 #include <vector>
 
-namespace ocira::core::test::utils {
+using namespace ocira::core;
+using namespace ocira::core::components;
 
-std::shared_ptr<ocira::core::Circuit> ExampleCircuitGenerator::getExampleCircuit1() {
+namespace ocira::core::test::helpers {
+
+std::shared_ptr<::Circuit> ExampleCircuitGenerator::getExampleCircuit1() {
   std::shared_ptr<Circuit> circuit = std::make_shared<Circuit>();
   std::shared_ptr<DCCurrentSource> dcCurrentSrc = std::make_shared<DCCurrentSource>(1, 1.0);
   std::shared_ptr<Resistor> resistor = std::make_shared<Resistor>(2, 200);
@@ -79,4 +82,4 @@ std::shared_ptr<ocira::core::Circuit> ExampleCircuitGenerator::getExampleCircuit
 
   return circuit;
 }
-} // namespace ocira::core::test::utils
+} // namespace ocira::core::test::helpers

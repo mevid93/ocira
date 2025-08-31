@@ -38,6 +38,8 @@
 #include "component.hpp"
 #include <unordered_set>
 
+using namespace ocira::core::components;
+
 namespace ocira::core {
 
 ValidationResult CircuitValidator::isValidCircuit(const Circuit &circuit) {

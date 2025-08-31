@@ -31,6 +31,7 @@
 #include <gtest/gtest.h>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
 
 /// @brief Test Ground class constructor.
 TEST(ground, constructor_works) {

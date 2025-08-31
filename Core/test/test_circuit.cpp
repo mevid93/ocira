@@ -34,6 +34,7 @@
 #include <memory>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
 
 /// @brief Test Circuit class default constructor.
 TEST(circuit, constructor_works) {

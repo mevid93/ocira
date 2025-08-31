@@ -39,14 +39,19 @@
 #include <string>
 #include <vector>
 
-namespace ocira::core {
+namespace ocira::core::components {
 
+// Forward declarations.
 class Bus;
+
+} // namespace ocira::core::components
+
+namespace ocira::core {
 
 /// @brief Represents a connection between a component and a bus within a circuit.
 /// Each connection specifies the bus being connected to and the role of the terminal.
 struct Connection {
-  std::weak_ptr<Bus> bus;
+  std::weak_ptr<components::Bus> bus;
   TerminalRole role;
 };
 

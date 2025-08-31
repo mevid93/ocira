@@ -33,6 +33,7 @@
 #include <memory>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
 
 /// @brief Test Component class constructor.
 TEST(component, constructor_works) {

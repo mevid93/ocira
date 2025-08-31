@@ -34,11 +34,13 @@
 #include <memory>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
+using namespace ocira::core::test::helpers;
 
 // Test circuit transformer for example circuit 1.
 TEST(circuit_transfomer, example_circuit_1) {
   // Get example circuit.
-  const auto circuit = test::utils::ExampleCircuitGenerator::getExampleCircuit1();
+  const auto circuit = ExampleCircuitGenerator::getExampleCircuit1();
 
   // Get conductance matrix, current vector, and bus mappings.
   CircuitTransformer circuitTransformer(circuit);

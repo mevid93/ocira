@@ -1,8 +1,9 @@
 //==============================================================================
-// File:        test_dc_current_source.cpp
+// Project:     OCIRA (core library)
+// File:        ground.cpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Unit tests for DCCurrentSource class in OCIRA core library.
+// Description: Ground component model.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -22,32 +23,29 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 //
 //==============================================================================
+// Revision History:
+// - 2025-08-26 Martin Vidjeskog: Initial creation
+// - [YYYY-MM-DD] [Contributor]: [Description of change]
+//==============================================================================
 // Notes:
-// - Tests cover DCCurrentSource class.
-// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=dc_current_source.*
+// - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#include "dc_current_source.hpp"
-#include <gtest/gtest.h>
+#include "ground.hpp"
 
-using namespace ocira::core;
+namespace ocira::core::components {
 
-/// @brief Test DCCurrentSource class constructor.
-TEST(dc_current_source, constructor_works) {
-  // Create new DCCurrentSource object.
-  DCCurrentSource dcCurrentSource(1, 100);
-  // Expect equality.
-  EXPECT_EQ(dcCurrentSource.getId(), 1);
-  EXPECT_EQ(dcCurrentSource.getComponentType(), ComponentType::DC_CURRENT_SOURCE);
-  EXPECT_EQ(dcCurrentSource.getAmps(), 100);
+Ground::Ground(ComponentId id) : Component(id) { this->m_type = ComponentType::GROUND; }
+
+bool Ground::addConnection(std::weak_ptr<Bus> bus, TerminalRole role) {
+  if (this->m_connections.size() == 1) {
+    return false;
+  }
+
+  Connection connection{bus, role};
+  this->m_connections.push_back(connection);
+  return true;
 }
 
-/// @brief Test amps setter and getter.
-TEST(dc_current_source, set_amps) {
-  // Create new DCCurrentSource object.
-  DCCurrentSource dcCurrentSource(1, 100);
-  // Set new amps value.
-  dcCurrentSource.setAmps(200);
-  // Expect equality.
-  EXPECT_EQ(dcCurrentSource.getAmps(), 200);
-}
+bool Ground::isConnected() const { return this->m_connections.size() == 1; }
+} // namespace ocira::core::components

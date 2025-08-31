@@ -36,7 +36,7 @@
 #include <algorithm>
 #include <unordered_set>
 
-namespace ocira::core {
+namespace ocira::core::components {
 
 Bus::Bus(BusId id) : m_id(id) { this->m_components = std::vector<std::shared_ptr<Component>>(); }
 
@@ -101,4 +101,4 @@ const std::vector<std::weak_ptr<Bus>> Bus::getNeighborBuses() const {
 
   return buses;
 }
-} // namespace ocira::core
+} // namespace ocira::core::components

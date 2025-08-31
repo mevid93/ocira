@@ -39,11 +39,13 @@
 #include <memory>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
+using namespace ocira::core::test::helpers;
 
 /// @brief Test CircuitValidator with example circuit 1.
 TEST(circuit_validator, example_circuit_1) {
   // Get example circuit 1.
-  auto circuit = test::utils::ExampleCircuitGenerator::getExampleCircuit1();
+  auto circuit = ExampleCircuitGenerator::getExampleCircuit1();
   // Validate the circuit.
   ValidationResult result = CircuitValidator::isValidCircuit(*circuit);
   // Verify results.

@@ -1,6 +1,6 @@
 //==============================================================================
 // Project:     OCIRA (core library)
-// File:        resistor.cpp
+// File:        resistor.hpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
 // Description: Resistor component model.
@@ -31,26 +31,45 @@
 // - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#include "resistor.hpp"
-#include <stdexcept>
+#ifndef OCIRA_CORE_RESISTOR_HPP
+#define OCIRA_CORE_RESISTOR_HPP
 
-namespace ocira::core {
+#include "component.hpp"
+#include <cstdint>
 
-Resistor::Resistor(ComponentId id, float resistance) : Component(id) {
-  this->m_type = ComponentType::RESISTOR;
-  this->m_resistance = resistance;
-}
+namespace ocira::core::components {
 
-float Resistor::getResistance() const noexcept { return this->m_resistance; }
+/// @brief Represents a resistor component in the circuit.
+/// A resistor limits the flow of electric current between two buses.
+/// It is defined by its resistance value in ohms and contributes to
+/// voltage drops and power dissipation in circuit analysis.
+class Resistor final : public Component {
+public:
+  /// @brief Constructs a resistor with a unique ID and resistance value.
+  /// @param id Unique identifier for the resistor.
+  /// @param resistance Resistance value in ohms.
+  explicit Resistor(ComponentId id, float resistance);
 
-float Resistor::getConductance() const {
-  if (this->m_resistance == 0.0f) {
-    throw std::runtime_error("Conductance is undefined for zero resistance.");
-  }
+  /// @brief Destructor for the resistor component.
+  /// Declared virtual to support polymorphic cleanup.
+  ~Resistor() override = default;
 
-  return 1.0f / this->m_resistance;
-}
+  /// @brief Retrieves the resistance value of the resistor.
+  /// @return Resistance in ohms.
+  float getResistance() const noexcept;
 
-void Resistor::setResistance(float resistance) noexcept { this->m_resistance = resistance; }
+  /// @brief Calculates and returns the conductance of the resistor.
+  /// Conductance is the reciprocal of resistance, measured in siemens.
+  /// @return Conductance in siemens.
+  float getConductance() const;
 
-} // namespace ocira::core
+  /// @brief Updates the resistance value of the resistor.
+  /// @param resistance New resistance value in ohms.
+  void setResistance(float resistance) noexcept;
+
+private:
+  float m_resistance;
+};
+} // namespace ocira::core::components
+
+#endif // OCIRA_CORE_RESISTOR_HPP

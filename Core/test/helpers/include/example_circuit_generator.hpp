@@ -31,17 +31,19 @@
 // - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#ifndef OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP
-#define OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP
+#ifndef OCIRA_CORE_TEST_HELPERS_EXAMPLE_CIRCUIT_GENERATOR_HPP
+#define OCIRA_CORE_TEST_HELPERS_EXAMPLE_CIRCUIT_GENERATOR_HPP
 
 #include <memory>
 
 namespace ocira::core {
+
 // Forward declarations.
 class Circuit;
+
 } // namespace ocira::core
 
-namespace ocira::core::test::utils {
+namespace ocira::core::test::helpers {
 
 /// @brief Utility class for generating example circuits for testing purposes.
 /// This class provides static factory methods to create predefined circuit configurations.
@@ -58,6 +60,6 @@ public:
   /// @return Shared pointer to the generated Circuit instance.
   static std::shared_ptr<ocira::core::Circuit> getExampleCircuit1();
 };
-} // namespace ocira::core::test::utils
+} // namespace ocira::core::test::helpers
 
 #endif // OCIRA_CORE_TEST_UTILS_EXAMPLE_CIRCUIT_GENERATOR_HPP

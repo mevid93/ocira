@@ -1,8 +1,8 @@
 //==============================================================================
-// File:        test_resistor.cpp
+// File:        test_dc_current_source.cpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Unit tests for Resistor class in OCIRA core library.
+// Description: Unit tests for DCCurrentSource class in OCIRA core library.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -23,39 +23,32 @@
 //
 //==============================================================================
 // Notes:
-// - Tests cover Resistor class.
-// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=resistor.*
+// - Tests cover DCCurrentSource class.
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=dc_current_source.*
 //==============================================================================
 
-#include "resistor.hpp"
+#include "dc_current_source.hpp"
 #include <gtest/gtest.h>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
 
-/// @brief Test Resistor class constructor.
-TEST(resistor, constructor_works) {
-  // Create new Resistor object.
-  Resistor resistor(1, 100);
+/// @brief Test DCCurrentSource class constructor.
+TEST(dc_current_source, constructor_works) {
+  // Create new DCCurrentSource object.
+  DCCurrentSource dcCurrentSource(1, 100);
   // Expect equality.
-  EXPECT_EQ(resistor.getId(), 1);
-  EXPECT_EQ(resistor.getComponentType(), ComponentType::RESISTOR);
-  EXPECT_EQ(resistor.getResistance(), 100);
+  EXPECT_EQ(dcCurrentSource.getId(), 1);
+  EXPECT_EQ(dcCurrentSource.getComponentType(), ComponentType::DC_CURRENT_SOURCE);
+  EXPECT_EQ(dcCurrentSource.getAmps(), 100);
 }
 
-/// @brief Test resistance setter and getter.
-TEST(resistor, set_resistance) {
-  // Create new Resistor object.
-  Resistor resistor(1, 100);
-  // Set new resistance value.
-  resistor.setResistance(200.5);
+/// @brief Test amps setter and getter.
+TEST(dc_current_source, set_amps) {
+  // Create new DCCurrentSource object.
+  DCCurrentSource dcCurrentSource(1, 100);
+  // Set new amps value.
+  dcCurrentSource.setAmps(200);
   // Expect equality.
-  EXPECT_EQ(resistor.getResistance(), 200.5);
-}
-
-/// @brief Test that correct conductance is returned.
-TEST(resistor, get_conductance) {
-  // Create new Resistor object.
-  Resistor resistor(1, 200);
-  // Expect equality.
-  EXPECT_FLOAT_EQ(resistor.getConductance(), 0.005);
+  EXPECT_EQ(dcCurrentSource.getAmps(), 200);
 }

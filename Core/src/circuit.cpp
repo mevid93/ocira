@@ -35,6 +35,8 @@
 #include "bus.hpp"
 #include "component.hpp"
 
+using namespace ocira::core::components;
+
 namespace ocira::core {
 
 Circuit::Circuit() : m_simulationMode(SimulationMode::DC) {}

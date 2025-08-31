@@ -1,8 +1,8 @@
 //==============================================================================
-// File:        test_wire.cpp
+// File:        test_resistor.cpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Unit tests for Wire class in OCIRA core library.
+// Description: Unit tests for Resistor class in OCIRA core library.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -23,20 +23,40 @@
 //
 //==============================================================================
 // Notes:
-// - Tests cover Wire class.
-// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=wire.*
+// - Tests cover Resistor class.
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=resistor.*
 //==============================================================================
 
-#include "wire.hpp"
+#include "resistor.hpp"
 #include <gtest/gtest.h>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
 
-/// @brief Test Wire class constructor.
-TEST(wire, constructor_works) {
-  // Create new Wire object.
-  Wire wire(1);
+/// @brief Test Resistor class constructor.
+TEST(resistor, constructor_works) {
+  // Create new Resistor object.
+  Resistor resistor(1, 100);
   // Expect equality.
-  EXPECT_EQ(wire.getId(), 1);
-  EXPECT_EQ(wire.getComponentType(), ComponentType::WIRE);
+  EXPECT_EQ(resistor.getId(), 1);
+  EXPECT_EQ(resistor.getComponentType(), ComponentType::RESISTOR);
+  EXPECT_EQ(resistor.getResistance(), 100);
+}
+
+/// @brief Test resistance setter and getter.
+TEST(resistor, set_resistance) {
+  // Create new Resistor object.
+  Resistor resistor(1, 100);
+  // Set new resistance value.
+  resistor.setResistance(200.5);
+  // Expect equality.
+  EXPECT_EQ(resistor.getResistance(), 200.5);
+}
+
+/// @brief Test that correct conductance is returned.
+TEST(resistor, get_conductance) {
+  // Create new Resistor object.
+  Resistor resistor(1, 200);
+  // Expect equality.
+  EXPECT_FLOAT_EQ(resistor.getConductance(), 0.005);
 }

@@ -1,9 +1,9 @@
 //==============================================================================
 // Project:     OCIRA (core library)
-// File:        ground.hpp
+// File:        wire.hpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: Ground component model.
+// Description: Wire component model.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -31,39 +31,31 @@
 // - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#ifndef OCIRA_CORE_GROUND_HPP
-#define OCIRA_CORE_GROUND_HPP
+#ifndef OCIRA_CORE_WIRE_HPP
+#define OCIRA_CORE_WIRE_HPP
 
 #include "component.hpp"
 #include <cstdint>
 
-namespace ocira::core {
+namespace ocira::core::components {
 
-/// @brief Represents the ground in a circuit. The ground component serves as the reference point
-/// for voltage calculations. Every circuit should contain exactly one ground, which connects to a
-/// single bus. It typically defines the zero-voltage level in circuit analysis.
-class Ground final : public Component {
+/// @brief Represents an ideal wire component in the circuit simulation.
+/// This class models a perfect conductor with zero resistance, effectively
+/// acting as a short circuit between connected nodes. It inherits from the
+/// Component base class and overrides relevant behavior to reflect its ideal nature.
+class Wire final : public Component {
 public:
-  /// @brief Constructs a ground component with a unique ID.
-  /// @param id Unique identifier for the ground component.
-  explicit Ground(ComponentId id);
+  /// @brief Constructs a Wire component with a unique identifier.
+  /// Typically used to connect circuit nodes without introducing any resistance or delay.
+  /// @param id The unique ID assigned to this wire instance.
+  explicit Wire(ComponentId id);
 
-  /// @brief Destructor for the ground component.
+  /// @brief Destructor for Wire.
   /// Declared virtual to support polymorphic cleanup.
-  ~Ground() override = default;
-
-  /// @brief Connects the ground to a bus. Ground should only connect to one bus.
-  /// @param bus Weak pointer to the bus to connect.
-  /// @param role Terminal role of the connection.
-  /// @return True if the connection was successfully added; false otherwise.
-  bool addConnection(std::weak_ptr<Bus> bus, TerminalRole role) override;
-
-  /// @brief Checks whether the component is fully connected to all required buses.
-  /// @return True if the component meets all connection requirements; false otherwise.
-  virtual bool isConnected() const override;
+  ~Wire() override = default;
 
 private:
 };
-} // namespace ocira::core
+} // namespace ocira::core::components
 
-#endif // OCIRA_CORE_GROUND_HPP
+#endif // OCIRA_CORE_WIRE_HPP

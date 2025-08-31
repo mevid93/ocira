@@ -38,11 +38,15 @@
 #include <memory>
 #include <vector>
 
-namespace ocira::core {
+namespace ocira::core::components {
 
 // Forward declarations.
 class Bus;
 class Component;
+
+} // namespace ocira::core::components
+
+namespace ocira::core {
 
 /// @brief Represents an electrical circuit composed of components and buses.
 /// Supports both DC and AC simulation modes.
@@ -60,19 +64,19 @@ public:
 
   /// @brief Returns the list of components in the circuit.
   /// @return Const reference to the vector of components.
-  const std::vector<std::shared_ptr<Component>> &getComponents() const;
+  const std::vector<std::shared_ptr<components::Component>> &getComponents() const;
 
   /// @brief Returns the list of buses in the circuit.
   /// @return Const reference to the vector of buses.
-  const std::vector<std::shared_ptr<Bus>> &getBuses() const;
+  const std::vector<std::shared_ptr<components::Bus>> &getBuses() const;
 
   /// @brief Sets the buses for the circuit.
   /// @param buses Vector of shared pointers to Bus objects.
-  void setBuses(std::vector<std::shared_ptr<Bus>> buses);
+  void setBuses(std::vector<std::shared_ptr<components::Bus>> buses);
 
   /// @brief Sets the components for the circuit.
   /// @param components Vector of shared pointers to Component objects.
-  void setComponents(std::vector<std::shared_ptr<Component>> components);
+  void setComponents(std::vector<std::shared_ptr<components::Component>> components);
 
   /// @brief Sets the simulation mode for the circuit.
   /// @param mode Simulation mode (DC or AC).
@@ -83,8 +87,8 @@ public:
   SimulationMode getSimulationMode() const;
 
 private:
-  std::vector<std::shared_ptr<Bus>> m_buses;
-  std::vector<std::shared_ptr<Component>> m_components;
+  std::vector<std::shared_ptr<components::Bus>> m_buses;
+  std::vector<std::shared_ptr<components::Component>> m_components;
   SimulationMode m_simulationMode;
 };
 } // namespace ocira::core

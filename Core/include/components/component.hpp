@@ -38,7 +38,7 @@
 #include <memory>
 #include <vector>
 
-namespace ocira::core {
+namespace ocira::core::components {
 
 // Forward declarations.
 class Bus;
@@ -96,6 +96,6 @@ protected:
 private:
   ComponentId m_id;
 };
-} // namespace ocira::core
+} // namespace ocira::core::components
 
 #endif // OCIRA_CORE_COMPONENT_HPP

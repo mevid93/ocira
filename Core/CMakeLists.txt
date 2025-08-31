@@ -1,11 +1,17 @@
 #----------------------------------------------------------------------------
 # Core library
 #----------------------------------------------------------------------------
-file(GLOB CORE_SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB CORE_SRC_FILES 
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/components/*.cpp"
+)
 
 add_library(ocira_core "${CORE_SRC_FILES}")
 
-target_include_directories(ocira_core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories(ocira_core PUBLIC 
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/components"
+)
 
 message(STATUS "Armadillo include path: ${armadillo_SOURCE_DIR}/include")
 
@@ -25,12 +31,13 @@ if (BUILD_TESTING)
 
     file(GLOB CORE_TEST_FILES 
         "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/test/utils/src/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test/components/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/test/helpers/src/*.cpp"
     )
 
     add_executable(core_tests "${CORE_TEST_FILES}")
 
-    target_include_directories(core_tests PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/test/utils/include")
+    target_include_directories(core_tests PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/test/helpers/include")
 
     target_link_libraries(core_tests PRIVATE gtest_main)
 

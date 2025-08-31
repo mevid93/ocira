@@ -33,6 +33,7 @@
 #include <memory>
 
 using namespace ocira::core;
+using namespace ocira::core::components;
 
 /// @brief Test Bus class constructor.
 TEST(bus, constructor_works) {

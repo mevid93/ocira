@@ -38,12 +38,18 @@
 #include <armadillo>
 #include <unordered_map>
 
+namespace ocira::core::components {
+
+// Forward declarations.
+class DCCurrentSource;
+class Resistor;
+
+} // namespace ocira::core::components
+
 namespace ocira::core {
 
 // Forward declarations.
 class Circuit;
-class DCCurrentSource;
-class Resistor;
 
 /// @brief Unique identifier used for matrix computations.
 /// Each bus in the admittance matrix is assigned a sequential BusNumber.
@@ -76,30 +82,30 @@ public:
   /// @brief Maps matrix bus numbers to their corresponding circuit bus IDs.
   /// Useful for interpreting matrix results in terms of circuit topology.
   /// @return Reference to the bus number → bus ID mapping.
-  const std::unordered_map<BusNumber, BusId> &getBusNumberMap() const;
+  const std::unordered_map<BusNumber, components::BusId> &getBusNumberMap() const;
 
   /// @brief Maps circuit bus IDs to their corresponding matrix bus numbers.
   /// Enables lookup of matrix indices based on circuit structure.
   /// @return Reference to the bus ID → bus number mapping.
-  const std::unordered_map<BusId, BusNumber> &getBusIdMap() const;
+  const std::unordered_map<components::BusId, BusNumber> &getBusIdMap() const;
 
 private:
   std::shared_ptr<Circuit> m_circuit;
   std::shared_ptr<arma::cx_mat> m_Y;
   std::shared_ptr<arma::cx_vec> m_J;
-  std::unordered_map<BusNumber, BusId> m_busNumberMap;
-  std::unordered_map<BusId, BusNumber> m_busIdMap;
+  std::unordered_map<BusNumber, components::BusId> m_busNumberMap;
+  std::unordered_map<components::BusId, BusNumber> m_busIdMap;
 
   /// @brief Populates the admittance matrix and current vector based on circuit components.
   void _transformComponents();
 
   /// @brief Adds the contribution of a resistor to the admittance matrix.
   /// @param resistor Shared pointer to the resistor component.
-  void _transformResistor(std::shared_ptr<Resistor> resistor);
+  void _transformResistor(std::shared_ptr<components::Resistor> resistor);
 
   /// @brief Adds the contribution of a DC current source to the current vector.
   /// @param dcCurrentSrc Shared pointer to the DC current source component.
-  void _transformDCCurrentSource(std::shared_ptr<DCCurrentSource> dcCurrentSrc);
+  void _transformDCCurrentSource(std::shared_ptr<components::DCCurrentSource> dcCurrentSrc);
 };
 }; // namespace ocira::core
 

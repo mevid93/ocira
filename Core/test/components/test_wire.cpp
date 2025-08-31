@@ -1,9 +1,8 @@
 //==============================================================================
-// Project:     OCIRA (core library)
-// File:        dc_current_source.cpp
+// File:        test_wire.cpp
 // Author:      Martin Vidjeskog
 // Created:     2025-08-26
-// Description: DC current source component.
+// Description: Unit tests for Wire class in OCIRA core library.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -23,24 +22,22 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 //
 //==============================================================================
-// Revision History:
-// - 2025-08-26 Martin Vidjeskog: Initial creation
-// - [YYYY-MM-DD] [Contributor]: [Description of change]
-//==============================================================================
 // Notes:
-// - Please retain this header in all redistributed versions.
+// - Tests cover Wire class.
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=wire.*
 //==============================================================================
 
-#include "dc_current_source.hpp"
+#include "wire.hpp"
+#include <gtest/gtest.h>
 
-namespace ocira::core {
+using namespace ocira::core;
+using namespace ocira::core::components;
 
-DCCurrentSource::DCCurrentSource(ComponentId id, float amps) : Component(id) {
-  this->m_amps = amps;
-  this->m_type = ComponentType::DC_CURRENT_SOURCE;
+/// @brief Test Wire class constructor.
+TEST(wire, constructor_works) {
+  // Create new Wire object.
+  Wire wire(1);
+  // Expect equality.
+  EXPECT_EQ(wire.getId(), 1);
+  EXPECT_EQ(wire.getComponentType(), ComponentType::WIRE);
 }
-
-float DCCurrentSource::getAmps() const noexcept { return this->m_amps; }
-
-void DCCurrentSource::setAmps(float amps) noexcept { this->m_amps = amps; }
-} // namespace ocira::core

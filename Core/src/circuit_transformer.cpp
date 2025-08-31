@@ -36,6 +36,8 @@
 #include "dc_current_source.hpp"
 #include "resistor.hpp"
 
+using namespace ocira::core::components;
+
 namespace ocira::core {
 
 CircuitTransformer::CircuitTransformer(const std::shared_ptr<Circuit> &circuit)
