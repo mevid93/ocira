@@ -42,7 +42,7 @@ Bus::Bus(BusId id) : m_id(id) { this->m_components = std::vector<std::shared_ptr
 
 BusId Bus::getId() const noexcept { return this->m_id; }
 
-bool Bus::connectComponent(const std::shared_ptr<Component> &component) {
+bool Bus::addConnection(const std::shared_ptr<Component> &component) {
   bool exists = this->isConnectedToComponent(component);
 
   // If already connected, then do not connect again.
@@ -55,7 +55,7 @@ bool Bus::connectComponent(const std::shared_ptr<Component> &component) {
   return true;
 }
 
-bool Bus::disconnectComponent(const std::shared_ptr<Component> &component) {
+bool Bus::removeConnection(const std::shared_ptr<Component> &component) {
   auto originalSize = this->m_components.size();
 
   // Delete components that have same id as target component.

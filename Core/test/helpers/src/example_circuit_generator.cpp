@@ -2,7 +2,7 @@
 // Project:     OCIRA (core library tests)
 // File:        example_circuit_generator.cpp
 // Author:      Martin Vidjeskog
-// Created:     2025-08-26
+// Created:     2025-09-01
 // Description: Utility class to generate example circuits.
 // License:     GNU General Public License v3.0
 //==============================================================================
@@ -25,6 +25,7 @@
 //==============================================================================
 // Revision History:
 // - 2025-08-26 Martin Vidjeskog: Initial creation
+// - 2025-09-01 Martin Vidjeskog: Use ConnectionManager when building circuits.
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -35,17 +36,20 @@
 #include "bus.hpp"
 #include "circuit.hpp"
 #include "component.hpp"
+#include "connection_manager.hpp"
 #include "dc_current_source.hpp"
 #include "ground.hpp"
 #include "resistor.hpp"
 #include <vector>
 
 using namespace ocira::core;
+using namespace ocira::core::managers;
 using namespace ocira::core::components;
 
 namespace ocira::core::test::helpers {
 
 std::shared_ptr<::Circuit> ExampleCircuitGenerator::getExampleCircuit1() {
+  // Create all the components and buses.
   std::shared_ptr<Circuit> circuit = std::make_shared<Circuit>();
   std::shared_ptr<DCCurrentSource> dcCurrentSrc = std::make_shared<DCCurrentSource>(1, 1.0);
   std::shared_ptr<Resistor> resistor = std::make_shared<Resistor>(2, 200);
@@ -53,21 +57,19 @@ std::shared_ptr<::Circuit> ExampleCircuitGenerator::getExampleCircuit1() {
   std::shared_ptr<Bus> bus1 = std::make_shared<Bus>(1);
   std::shared_ptr<Bus> bus2 = std::make_shared<Bus>(2);
 
-  dcCurrentSrc->addConnection(bus1, TerminalRole::NEGATIVE);
-  bus1->connectComponent(dcCurrentSrc);
+  // Connect components and buses.
+  ConnectionManager::connectBusAndComponent(bus1, std::static_pointer_cast<Component>(dcCurrentSrc),
+                                            TerminalRole::NEGATIVE);
+  ConnectionManager::connectBusAndComponent(bus2, std::static_pointer_cast<Component>(dcCurrentSrc),
+                                            TerminalRole::POSITIVE);
+  ConnectionManager::connectBusAndComponent(bus2, std::static_pointer_cast<Component>(resistor),
+                                            TerminalRole::NEGATIVE);
+  ConnectionManager::connectBusAndComponent(bus1, std::static_pointer_cast<Component>(resistor),
+                                            TerminalRole::POSITIVE);
+  ConnectionManager::connectBusAndComponent(bus1, std::static_pointer_cast<Component>(ground),
+                                            TerminalRole::NEGATIVE);
 
-  dcCurrentSrc->addConnection(bus2, TerminalRole::POSITIVE);
-  bus2->connectComponent(dcCurrentSrc);
-
-  resistor->addConnection(bus1, TerminalRole::NEGATIVE);
-  bus1->connectComponent(resistor);
-
-  resistor->addConnection(bus2, TerminalRole::POSITIVE);
-  bus2->connectComponent(resistor);
-
-  ground->addConnection(bus1, TerminalRole::NEGATIVE);
-  bus1->connectComponent(ground);
-
+  // Group components and buses to two vectors.
   std::vector<std::shared_ptr<Component>> components;
   components.push_back(dcCurrentSrc);
   components.push_back(resistor);
@@ -77,6 +79,7 @@ std::shared_ptr<::Circuit> ExampleCircuitGenerator::getExampleCircuit1() {
   buses.push_back(bus1);
   buses.push_back(bus2);
 
+  // Create circuit.
   circuit->setBuses(buses);
   circuit->setComponents(components);
 

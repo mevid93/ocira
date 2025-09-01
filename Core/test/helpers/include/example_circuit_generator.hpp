@@ -2,7 +2,7 @@
 // Project:     OCIRA (core library tests)
 // File:        example_circuit_generator.hpp
 // Author:      Martin Vidjeskog
-// Created:     2025-08-26
+// Created:     2025-09-01
 // Description: Utility class to generate example circuits.
 // License:     GNU General Public License v3.0
 //==============================================================================
@@ -25,6 +25,7 @@
 //==============================================================================
 // Revision History:
 // - 2025-08-26 Martin Vidjeskog: Initial creation
+// - 2025-09-01 Martin Vidjeskog: Use ConnectionManager when building circuits.
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:

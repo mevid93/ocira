@@ -65,13 +65,13 @@ public:
   /// Adds the component to the internal list if it's not already connected.
   /// @param component Shared pointer to the component to connect.
   /// @return True if the component was successfully connected; false if already connected.
-  bool connectComponent(const std::shared_ptr<Component> &component);
+  bool addConnection(const std::shared_ptr<Component> &component);
 
   /// @brief Disconnects a component from this bus.
   /// Removes the component from the internal list if it exists.
   /// @param component Shared pointer to the component to disconnect.
   /// @return True if the component was successfully disconnected; false if not found.
-  bool disconnectComponent(const std::shared_ptr<Component> &component);
+  bool removeConnection(const std::shared_ptr<Component> &component);
 
   /// @brief Returns all components currently connected to this bus.
   /// @return Const reference to the vector of connected components.

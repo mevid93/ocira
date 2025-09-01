@@ -50,7 +50,7 @@ TEST(bus, connect_new_component) {
   // Create new Component object.
   auto component = std::make_shared<Component>(1);
   // Connect component to bus.
-  bool returnValue = bus.connectComponent(component);
+  bool returnValue = bus.addConnection(component);
   // Verify that component was connected.
   EXPECT_TRUE(returnValue);
   EXPECT_EQ(bus.getComponents().size(), 1);
@@ -64,9 +64,9 @@ TEST(bus, connect_component_again) {
   // Create new Component object.
   auto component = std::make_shared<Component>(1);
   // Connect component to bus.
-  bool firstConnection = bus.connectComponent(component);
+  bool firstConnection = bus.addConnection(component);
   // Try to connect same component again.
-  bool secondConnection = bus.connectComponent(component);
+  bool secondConnection = bus.addConnection(component);
   // Verify that component was connected only once.
   EXPECT_TRUE(firstConnection);
   EXPECT_FALSE(secondConnection);
@@ -80,11 +80,11 @@ TEST(bus, disconnect_component_that_is_connected) {
   // Create new Component object.
   auto component = std::make_shared<Component>(1);
   // Connect component to bus.
-  bool connect = bus.connectComponent(component);
+  bool connect = bus.addConnection(component);
   EXPECT_TRUE(connect);
   EXPECT_EQ(bus.getComponents().size(), 1);
   // Try to disconnect component.
-  bool disconnect = bus.disconnectComponent(component);
+  bool disconnect = bus.removeConnection(component);
   // Verify that component was disconnected.
   EXPECT_TRUE(disconnect);
   EXPECT_EQ(bus.getComponents().size(), 0);
@@ -97,7 +97,7 @@ TEST(bus, disconnect_component_that_is_not_connected) {
   // Create new Component object.
   auto component = std::make_shared<Component>(1);
   // Try to disconnect component.
-  bool disconnect = bus.disconnectComponent(component);
+  bool disconnect = bus.removeConnection(component);
   // Verify that component was disconnected.
   EXPECT_FALSE(disconnect);
 }
@@ -112,7 +112,7 @@ TEST(bus, is_connected_to_component) {
   bool isConnected = bus.isConnectedToComponent(component);
   EXPECT_FALSE(isConnected);
   // Connect component to bus.
-  bus.connectComponent(component);
+  bus.addConnection(component);
   // Check if component is connected.
   isConnected = bus.isConnectedToComponent(component);
   EXPECT_TRUE(isConnected);
@@ -126,7 +126,7 @@ TEST(bus, get_number_of_components) {
   // Create new component object.
   auto component = std::make_shared<Component>(1);
   // Connect component to bus.
-  bus.connectComponent(component);
+  bus.addConnection(component);
   uint32_t components2 = bus.getNumberOfComponents();
   // Verify results.
   EXPECT_EQ(components, 0);
@@ -142,7 +142,7 @@ TEST(bus, is_connected) {
   // Create new component object.
   auto component = std::make_shared<Component>(1);
   // Connect component to bus.
-  bus.connectComponent(component);
+  bus.addConnection(component);
   // Perform second check.
   EXPECT_TRUE(bus.isConnected());
 }
@@ -157,8 +157,8 @@ TEST(bus, get_neighbor_buses) {
   // Connect components with buses.
   component1->addConnection(bus2, TerminalRole::POSITIVE);
   component2->addConnection(bus2, TerminalRole::POSITIVE);
-  bus1->connectComponent(component1);
-  bus2->connectComponent(component2);
+  bus1->addConnection(component1);
+  bus2->addConnection(component2);
   // Get list of neighbor buses for bus1.
   auto neigbors = bus1->getNeighborBuses();
   // Validate results.
