@@ -1,9 +1,9 @@
 //==============================================================================
 // Project:     OCIRA (core library)
-// File:        wire.hpp
+// File:        dc_voltage_source.cpp
 // Author:      Martin Vidjeskog
-// Created:     2025-08-26
-// Description: Wire component model.
+// Created:     2025-09-04
+// Description: DC voltage source component.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -24,37 +24,24 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-26 Martin Vidjeskog: Initial creation
+// - 2025-09-04 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
 // - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#ifndef OCIRA_CORE_WIRE_HPP
-#define OCIRA_CORE_WIRE_HPP
-
-#include "component.hpp"
-#include <cstdint>
+#include "dc_voltage_source.hpp"
 
 namespace ocira::core::components {
 
-/// @brief Represents an ideal wire component in the circuit simulation.
-/// This class models a perfect conductor with zero resistance, effectively
-/// acting as a short circuit between connected nodes. It inherits from the
-/// Component base class and overrides relevant behavior to reflect its ideal nature.
-class Wire final : public Component {
-public:
-  /// @brief Constructs a Wire component with a unique identifier.
-  /// Typically used to connect circuit nodes without introducing any resistance or delay.
-  /// @param id The unique ID assigned to this wire instance.
-  explicit Wire(ComponentId id);
+DCVoltageSource::DCVoltageSource(ComponentId id, float volts) : Component(id) {
+  this->m_type = ComponentType::DC_VOLTAGE_SOURCE;
+  this->m_volts = volts;
+}
 
-  /// @brief Destructor for Wire.
-  ~Wire() override = default;
+float DCVoltageSource::getVolts() const noexcept { return this->m_volts; }
 
-private:
-};
+void DCVoltageSource::setVolts(float volts) noexcept { this->m_volts = volts; }
+
 } // namespace ocira::core::components
-
-#endif // OCIRA_CORE_WIRE_HPP

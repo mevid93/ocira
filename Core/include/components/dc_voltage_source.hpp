@@ -1,9 +1,9 @@
 //==============================================================================
 // Project:     OCIRA (core library)
-// File:        wire.hpp
+// File:        dc_voltage_source.hpp
 // Author:      Martin Vidjeskog
-// Created:     2025-08-26
-// Description: Wire component model.
+// Created:     2025-09-04
+// Description: DC voltage source component.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -24,37 +24,46 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-26 Martin Vidjeskog: Initial creation
+// - 2025-09-04 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
 // - Please retain this header in all redistributed versions.
 //==============================================================================
 
-#ifndef OCIRA_CORE_WIRE_HPP
-#define OCIRA_CORE_WIRE_HPP
+#ifndef OCIRA_CORE_DC_VOLTAGE_SOURCE_HPP
+#define OCIRA_CORE_DC_VOLTAGE_SOURCE_HPP
 
 #include "component.hpp"
 #include <cstdint>
 
 namespace ocira::core::components {
 
-/// @brief Represents an ideal wire component in the circuit simulation.
-/// This class models a perfect conductor with zero resistance, effectively
-/// acting as a short circuit between connected nodes. It inherits from the
-/// Component base class and overrides relevant behavior to reflect its ideal nature.
-class Wire final : public Component {
+/// @brief Represents a DC voltage source in the circuit. A DC voltage source maintains a constant
+/// voltage between two terminals. It acts as an edge in the circuit graph, connecting two
+/// buses with a defined voltage. This component is used in circuit analysis to model ideal voltage
+/// sources.
+class DCVoltageSource final : public Component {
 public:
-  /// @brief Constructs a Wire component with a unique identifier.
-  /// Typically used to connect circuit nodes without introducing any resistance or delay.
-  /// @param id The unique ID assigned to this wire instance.
-  explicit Wire(ComponentId id);
+  /// @brief Constructs a DC voltage source with a unique ID and voltage level.
+  /// @param id Unique identifier for the component.
+  /// @param volts Constant voltage level in volts.
+  explicit DCVoltageSource(ComponentId id, float volts);
 
-  /// @brief Destructor for Wire.
-  ~Wire() override = default;
+  /// @brief Destructor for the DC voltage source.
+  ~DCVoltageSource() override = default;
+
+  /// @brief Retrieves the voltage level of the source.
+  /// @return Voltage level in volts.
+  float getVolts() const noexcept;
+
+  /// @brief Updates the voltage level of the source.
+  /// @param volts New voltage level in volts.
+  void setVolts(float volts) noexcept;
 
 private:
+  float m_volts;
 };
 } // namespace ocira::core::components
 
-#endif // OCIRA_CORE_WIRE_HPP
+#endif // OCIRA_CORE_DC_VOLTAGE_SOURCE_HPP

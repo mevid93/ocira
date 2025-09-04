@@ -51,7 +51,6 @@ public:
   explicit DCCurrentSource(ComponentId id, float amps);
 
   /// @brief Destructor for the DC current source.
-  /// Declared virtual to ensure proper cleanup when using polymorphism.
   ~DCCurrentSource() override = default;
 
   /// @brief Retrieves the current value of the source.

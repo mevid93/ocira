@@ -51,7 +51,6 @@ public:
   explicit Resistor(ComponentId id, float resistance);
 
   /// @brief Destructor for the resistor component.
-  /// Declared virtual to support polymorphic cleanup.
   ~Resistor() override = default;
 
   /// @brief Retrieves the resistance value of the resistor.

@@ -49,7 +49,6 @@ public:
   explicit Ground(ComponentId id);
 
   /// @brief Destructor for the ground component.
-  /// Declared virtual to support polymorphic cleanup.
   ~Ground() override = default;
 
   /// @brief Connects the ground to a bus. Ground should only connect to one bus.
