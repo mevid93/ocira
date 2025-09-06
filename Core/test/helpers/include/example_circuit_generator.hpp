@@ -60,6 +60,16 @@ public:
   /// Useful for basic validation and simulation tests.
   /// @return Shared pointer to the generated Circuit instance.
   static std::shared_ptr<ocira::core::Circuit> getExampleCircuit1();
+
+  /// @brief Generates a simple example circuit.
+  /// The circuit contains:
+  /// - A voltage source
+  /// - Two DC current sources
+  /// - Seven resistors
+  /// Circuit is from Piirianalyysi 1 book (ISBN 978-952-92-8720-8, page 97).
+  /// Useful for basic validation and simulation tests.
+  /// @return Shared pointer to the generated Circuit instance.
+  static std::shared_ptr<ocira::core::Circuit> getExampleCircuit2();
 };
 } // namespace ocira::core::test::helpers
 
