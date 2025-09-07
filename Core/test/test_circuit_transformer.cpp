@@ -24,7 +24,7 @@
 //==============================================================================
 // Notes:
 // - Tests cover CircuitTransfomer class.
-// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=circuit_transfomer.*
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=circuit_transformer.*
 //==============================================================================
 
 #include "circuit.hpp"
@@ -38,7 +38,7 @@ using namespace ocira::core::components;
 using namespace ocira::core::test::helpers;
 
 // Test circuit transformer for example circuit 1.
-TEST(circuit_transfomer, example_circuit_1) {
+TEST(circuit_transformer, example_circuit_1) {
   // Get example circuit.
   const auto circuit = ExampleCircuitGenerator::getExampleCircuit1();
 
@@ -56,8 +56,46 @@ TEST(circuit_transfomer, example_circuit_1) {
   EXPECT_FLOAT_EQ((*yMatrix)(0, 0).imag(), 0);
 
   EXPECT_EQ(iVector->n_elem, 1);
-  EXPECT_EQ((*iVector)(0).real(), 1.0f);
+  EXPECT_FLOAT_EQ((*iVector)(0).real(), 1.0f);
 
   EXPECT_EQ(bNumberMap.size(), 2);
   EXPECT_EQ(bIdMap.size(), 2);
+}
+
+// Test circuit transformer for example circuit 2.
+TEST(circuit_transformer, example_circuit_2) {
+  // Get example circuit.
+  const auto circuit = ExampleCircuitGenerator::getExampleCircuit2();
+
+  // Get conductance matrix, current vector, and bus mappings.
+  CircuitTransformer circuitTransformer(circuit);
+  std::shared_ptr<arma::cx_mat> yMatrix = circuitTransformer.getAdmittanceMatrix();
+  std::shared_ptr<arma::cx_vec> iVector = circuitTransformer.getCurrentVector();
+  std::unordered_map<BusNumber, BusId> bNumberMap = circuitTransformer.getBusNumberMap();
+  std::unordered_map<BusId, BusNumber> bIdMap = circuitTransformer.getBusIdMap();
+
+  // Verify results.
+  EXPECT_EQ(yMatrix->n_rows, 5);
+  EXPECT_EQ(yMatrix->n_cols, 5);
+  EXPECT_FLOAT_EQ((*yMatrix)(4, 0).real(), 1);
+  EXPECT_FLOAT_EQ((*yMatrix)(4, 1).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(4, 2).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(4, 3).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(4, 4).real(), 0);
+
+  EXPECT_FLOAT_EQ((*yMatrix)(0, 4).real(), 1);
+  EXPECT_FLOAT_EQ((*yMatrix)(1, 4).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(2, 4).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(3, 4).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(4, 4).real(), 0);
+
+  EXPECT_EQ(iVector->n_elem, 5);
+  EXPECT_FLOAT_EQ((*iVector)(0).real(), 0.0f);
+  EXPECT_FLOAT_EQ((*iVector)(1).real(), 2.0f);
+  EXPECT_FLOAT_EQ((*iVector)(2).real(), 0.0f);
+  EXPECT_FLOAT_EQ((*iVector)(3).real(), 1.0f);
+  EXPECT_FLOAT_EQ((*iVector)(4).real(), 1.0f);
+
+  EXPECT_EQ(bNumberMap.size(), 5);
+  EXPECT_EQ(bIdMap.size(), 5);
 }

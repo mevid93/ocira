@@ -34,6 +34,7 @@
 #include "circuit_transformer.hpp"
 #include "circuit.hpp"
 #include "dc_current_source.hpp"
+#include "dc_voltage_source.hpp"
 #include "resistor.hpp"
 
 using namespace ocira::core::components;
@@ -66,12 +67,23 @@ CircuitTransformer::CircuitTransformer(const std::shared_ptr<Circuit> &circuit)
     indice++;
   }
 
-  // 2. Initialize Y matrix and J vector.
-  uint32_t n = indice;
-  this->m_Y = std::make_shared<arma::cx_mat>(n - 1, n - 1, arma::fill::zeros);
-  this->m_J = std::make_shared<arma::cx_vec>(n - 1, arma::fill::zeros);
+  // 2. Count the number of voltage sources in circuit.
+  uint32_t m = 0;
+  for (auto &component : circuit->getComponents()) {
+    auto type = component->getComponentType();
+    if (type == ComponentType::DC_VOLTAGE_SOURCE || type == ComponentType::AC_VOLTAGE_SOURCE) {
+      m++;
+    }
+  }
 
-  // 3. Loop through the components and update the Y matrix and J vector.
+  // 3. Initialize Y matrix and J vector.
+  uint32_t n = indice;
+  this->m_sizeG = n - 1;
+  this->m_sizeB = m;
+  this->m_Y = std::make_shared<arma::cx_mat>(n - 1 + m, n - 1 + m, arma::fill::zeros);
+  this->m_J = std::make_shared<arma::cx_vec>(n - 1 + m, arma::fill::zeros);
+
+  // 4. Loop through the components and update the Y matrix and J vector.
   this->_transformComponents();
 }
 
@@ -90,6 +102,8 @@ const std::unordered_map<BusId, BusNumber> &CircuitTransformer::getBusIdMap() co
 // PRIVATE MEMBER METHODS.
 
 void CircuitTransformer::_transformComponents() {
+  uint32_t voltageSourceCounter = 0;
+
   for (auto component : m_circuit->getComponents()) {
     switch (component->getComponentType()) {
     case ComponentType::GROUND:
@@ -105,6 +119,13 @@ void CircuitTransformer::_transformComponents() {
       std::shared_ptr<DCCurrentSource> dcCurrentSrc =
           std::dynamic_pointer_cast<DCCurrentSource>(component);
       this->_transformDCCurrentSource(dcCurrentSrc);
+      break;
+    }
+    case ComponentType::DC_VOLTAGE_SOURCE: {
+      std::shared_ptr<DCVoltageSource> dcVoltageSrc =
+          std::dynamic_pointer_cast<DCVoltageSource>(component);
+      this->_transformDCVoltageSource(dcVoltageSrc, voltageSourceCounter);
+      voltageSourceCounter++;
       break;
     }
     default:
@@ -175,6 +196,48 @@ void CircuitTransformer::_transformDCCurrentSource(std::shared_ptr<DCCurrentSour
         (*this->m_J)(j - 1) -= amps;
       }
     }
+  } else {
+    throw std::runtime_error("Unexpected error! Pointer not existing!");
+  }
+}
+
+void CircuitTransformer::_transformDCVoltageSource(std::shared_ptr<DCVoltageSource> dCVoltageSource,
+                                                   uint32_t voltageSourceIndex) {
+  float voltages = dCVoltageSource->getVolts();
+
+  auto connection1 = dCVoltageSource->getConnections()[0];
+  auto connection2 = dCVoltageSource->getConnections()[1];
+
+  auto b1 = connection1.bus.lock();
+  auto b2 = connection2.bus.lock();
+
+  if (b1 && b2) {
+    BusId busId1 = b1->getId();
+    BusId busId2 = b2->getId();
+    BusNumber i = this->m_busIdMap[busId1];
+    BusNumber j = this->m_busIdMap[busId2];
+
+    if (i != 0) {
+      if (connection1.role == TerminalRole::POSITIVE) {
+        (*this->m_Y)(this->m_sizeG + voltageSourceIndex, i - 1) = 1;
+        (*this->m_Y)(i - 1, this->m_sizeG + voltageSourceIndex) = 1;
+      } else {
+        (*this->m_Y)(this->m_sizeG + voltageSourceIndex, i - 1) = -1;
+        (*this->m_Y)(i - 1, this->m_sizeG + voltageSourceIndex) = -1;
+      }
+    }
+
+    if (j != 0) {
+      if (connection2.role == TerminalRole::POSITIVE) {
+        (*this->m_Y)(this->m_sizeG + voltageSourceIndex, j - 1) = 1;
+        (*this->m_Y)(j - 1, this->m_sizeG + voltageSourceIndex) = 1;
+      } else {
+        (*this->m_Y)(this->m_sizeG + voltageSourceIndex, j - 1) = -1;
+        (*this->m_Y)(j - 1, this->m_sizeG + voltageSourceIndex) = -1;
+      }
+    }
+
+    (*this->m_J)(this->m_sizeG + voltageSourceIndex) = voltages;
   } else {
     throw std::runtime_error("Unexpected error! Pointer not existing!");
   }

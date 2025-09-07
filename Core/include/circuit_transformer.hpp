@@ -42,6 +42,7 @@ namespace ocira::core::components {
 
 // Forward declarations.
 class DCCurrentSource;
+class DCVoltageSource;
 class Resistor;
 
 } // namespace ocira::core::components
@@ -59,6 +60,8 @@ using BusNumber = uint32_t;
 /// @brief Transforms a circuit into its mathematical representation for simulation.
 /// Converts the circuit into an admittance matrix (Y) and a current vector (J),
 /// forming the equation Y * U = J, where U is the unknown voltage vector.
+/// We use modified nodal analysis: https://lpsa.swarthmore.edu/Systems/Electrical/mna/MNA3.html.
+/// Y = [[G B], [C D]].
 class CircuitTransformer {
 public:
   /// @brief Constructs a transformer for the given circuit.
@@ -90,6 +93,8 @@ public:
   const std::unordered_map<components::BusId, BusNumber> &getBusIdMap() const;
 
 private:
+  uint32_t m_sizeG; // G size
+  uint32_t m_sizeB; // B size
   std::shared_ptr<Circuit> m_circuit;
   std::shared_ptr<arma::cx_mat> m_Y;
   std::shared_ptr<arma::cx_vec> m_J;
@@ -106,6 +111,14 @@ private:
   /// @brief Adds the contribution of a DC current source to the current vector.
   /// @param dcCurrentSrc Shared pointer to the DC current source component.
   void _transformDCCurrentSource(std::shared_ptr<components::DCCurrentSource> dcCurrentSrc);
+
+  /// @brief Adds the contribution of DC voltage source to the admittance matrix and current vector.
+  /// @param dcVoltageSrc Shared pointer to the DC voltage source component.
+  /// @param voltageSourceIndex Index of the auxiliary current variable introduced for this DC
+  /// voltage source. This index corresponds to the additional row and column in the MNA matrix used
+  /// to enforce the voltage constraint.
+  void _transformDCVoltageSource(std::shared_ptr<components::DCVoltageSource> dcVoltageSrc,
+                                 uint32_t voltageSourceIndex);
 };
 }; // namespace ocira::core
 
