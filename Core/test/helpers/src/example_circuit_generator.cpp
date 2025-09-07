@@ -93,7 +93,7 @@ std::shared_ptr<Circuit> ExampleCircuitGenerator::getExampleCircuit2() {
 
   std::shared_ptr<Ground> ground = std::make_shared<Ground>(0);
 
-  std::shared_ptr<DCVoltageSource> dcVoltageSrc1 = std::make_shared<DCVoltageSource>(1, 1.0);
+  std::shared_ptr<DCVoltageSource> dcVoltageSrc1 = std::make_shared<DCVoltageSource>(1, 5.0);
 
   std::shared_ptr<Resistor> resistor1 = std::make_shared<Resistor>(2, 100);
   std::shared_ptr<Resistor> resistor2 = std::make_shared<Resistor>(3, 100);

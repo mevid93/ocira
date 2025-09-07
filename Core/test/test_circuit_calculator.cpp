@@ -1,8 +1,8 @@
 //==============================================================================
-// File:        test_circuit_transformer.cpp
+// File:        test_circuit_calculator.cpp
 // Author:      Martin Vidjeskog
-// Created:     2025-08-26
-// Description: Unit tests for CircuitTransformer class in OCIRA core library.
+// Created:     2025-09-07
+// Description: Unit tests for CircuitCalculator class in OCIRA core library.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -23,11 +23,12 @@
 //
 //==============================================================================
 // Notes:
-// - Tests cover CircuitTransfomer class.
-// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=circuit_transformer.*
+// - Tests cover CircuitCalculator class.
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=circuit_calculator.*
 //==============================================================================
 
 #include "circuit.hpp"
+#include "circuit_calculator.hpp"
 #include "circuit_transformer.hpp"
 #include "example_circuit_generator.hpp"
 #include <gtest/gtest.h>
@@ -38,7 +39,7 @@ using namespace ocira::core::components;
 using namespace ocira::core::test::helpers;
 
 // Test circuit transformer for example circuit 1.
-TEST(circuit_transformer, example_circuit_1) {
+TEST(circuit_calculator, example_circuit_1) {
   // Get example circuit.
   const auto circuit = ExampleCircuitGenerator::getExampleCircuit1();
 
@@ -46,24 +47,20 @@ TEST(circuit_transformer, example_circuit_1) {
   CircuitTransformer circuitTransformer(circuit);
   std::shared_ptr<arma::cx_mat> yMatrix = circuitTransformer.getAdmittanceMatrix();
   std::shared_ptr<arma::cx_vec> iVector = circuitTransformer.getCurrentVector();
-  std::unordered_map<BusNumber, BusId> bNumberMap = circuitTransformer.getBusNumberMap();
-  std::unordered_map<BusId, BusNumber> bIdMap = circuitTransformer.getBusIdMap();
+
+  // Peform calculation.
+  std::shared_ptr<arma::cx_vec> solution_vector =
+      CircuitCalculator::solveVoltages(yMatrix, iVector);
 
   // Verify results.
-  EXPECT_EQ(yMatrix->n_rows, 1);
-  EXPECT_EQ(yMatrix->n_cols, 1);
-  EXPECT_FLOAT_EQ((*yMatrix)(0, 0).real(), 1.0 / 200);
-  EXPECT_FLOAT_EQ((*yMatrix)(0, 0).imag(), 0);
+  EXPECT_EQ(solution_vector->n_rows, 1);
+  EXPECT_EQ(solution_vector->n_cols, 1);
 
-  EXPECT_EQ(iVector->n_elem, 1);
-  EXPECT_FLOAT_EQ((*iVector)(0).real(), 1.0f);
-
-  EXPECT_EQ(bNumberMap.size(), 2);
-  EXPECT_EQ(bIdMap.size(), 2);
+  EXPECT_FLOAT_EQ((*solution_vector)(0).real(), 200);
 }
 
 // Test circuit transformer for example circuit 2.
-TEST(circuit_transformer, example_circuit_2) {
+TEST(circuit_calculator, example_circuit_2) {
   // Get example circuit.
   const auto circuit = ExampleCircuitGenerator::getExampleCircuit2();
 
@@ -71,31 +68,18 @@ TEST(circuit_transformer, example_circuit_2) {
   CircuitTransformer circuitTransformer(circuit);
   std::shared_ptr<arma::cx_mat> yMatrix = circuitTransformer.getAdmittanceMatrix();
   std::shared_ptr<arma::cx_vec> iVector = circuitTransformer.getCurrentVector();
-  std::unordered_map<BusNumber, BusId> bNumberMap = circuitTransformer.getBusNumberMap();
-  std::unordered_map<BusId, BusNumber> bIdMap = circuitTransformer.getBusIdMap();
+
+  // Peform calculation.
+  std::shared_ptr<arma::cx_vec> solution_vector =
+      CircuitCalculator::solveVoltages(yMatrix, iVector);
 
   // Verify results.
-  EXPECT_EQ(yMatrix->n_rows, 5);
-  EXPECT_EQ(yMatrix->n_cols, 5);
-  EXPECT_FLOAT_EQ((*yMatrix)(4, 0).real(), 1);
-  EXPECT_FLOAT_EQ((*yMatrix)(4, 1).real(), 0);
-  EXPECT_FLOAT_EQ((*yMatrix)(4, 2).real(), 0);
-  EXPECT_FLOAT_EQ((*yMatrix)(4, 3).real(), 0);
-  EXPECT_FLOAT_EQ((*yMatrix)(4, 4).real(), 0);
+  EXPECT_EQ(solution_vector->n_rows, 5);
+  EXPECT_EQ(solution_vector->n_cols, 1);
 
-  EXPECT_FLOAT_EQ((*yMatrix)(0, 4).real(), 1);
-  EXPECT_FLOAT_EQ((*yMatrix)(1, 4).real(), 0);
-  EXPECT_FLOAT_EQ((*yMatrix)(2, 4).real(), 0);
-  EXPECT_FLOAT_EQ((*yMatrix)(3, 4).real(), 0);
-  EXPECT_FLOAT_EQ((*yMatrix)(4, 4).real(), 0);
-
-  EXPECT_EQ(iVector->n_elem, 5);
-  EXPECT_FLOAT_EQ((*iVector)(0).real(), 0.0f);
-  EXPECT_FLOAT_EQ((*iVector)(1).real(), 2.0f);
-  EXPECT_FLOAT_EQ((*iVector)(2).real(), 0.0f);
-  EXPECT_FLOAT_EQ((*iVector)(3).real(), 1.0f);
-  EXPECT_FLOAT_EQ((*iVector)(4).real(), 5.0f);
-
-  EXPECT_EQ(bNumberMap.size(), 5);
-  EXPECT_EQ(bIdMap.size(), 5);
+  EXPECT_FLOAT_EQ((*solution_vector)(0).real(), 5.0f);
+  EXPECT_FLOAT_EQ((*solution_vector)(1).real(), 10.725806f);
+  EXPECT_FLOAT_EQ((*solution_vector)(2).real(), 3.4314516f);
+  EXPECT_FLOAT_EQ((*solution_vector)(3).real(), 2.6209679f);
+  EXPECT_FLOAT_EQ((*solution_vector)(4).real(), 0.057258062f); // This is current, not voltage.
 }

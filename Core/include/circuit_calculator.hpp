@@ -2,7 +2,7 @@
 // Project:     OCIRA (core library)
 // File:        circuit_calculator.hpp
 // Author:      Martin Vidjeskog
-// Created:     2025-08-26
+// Created:     2025-09-07
 // Description: Class to calculate U vector (unknown voltages in a circuit).
 // License:     GNU General Public License v3.0
 //==============================================================================
@@ -24,7 +24,7 @@
 //
 //==============================================================================
 // Revision History:
-// - 2025-08-26 Martin Vidjeskog: Initial creation
+// - 2025-09-07 Martin Vidjeskog: Initial creation
 // - [YYYY-MM-DD] [Contributor]: [Description of change]
 //==============================================================================
 // Notes:
@@ -37,8 +37,31 @@
 #include <armadillo>
 
 namespace ocira::core {
+
+/// @class CircuitCalculator
+/// @brief Provides core functionality for solving electrical circuits using Modified Nodal Analysis
+/// (MNA).
+///
+/// This class offers static methods to compute node voltages and source currents in linear
+/// electrical networks. It operates on complex admittance matrices and current/source vectors,
+/// making it suitable for both DC and AC analysis. The class is intentionally non-instantiable and
+/// serves as a utility for matrix-based circuit solving.
+///
+/// Usage typically involves constructing the admittance matrix (Y) and source vector (J),
+/// then calling solveVoltages(Y, J) to obtain the solution vector.
 class CircuitCalculator {
 public:
+  /// @brief Make Class non-instantiable.
+  CircuitCalculator() = delete;
+
+  /// @brief Solves the system of equations Y * V = J for node voltages and source currents.
+  /// @param Y Complex admittance matrix representing the circuit (includes G, B, C, D blocks).
+  /// @param J Complex current/source vector (includes injected currents and voltage source
+  /// constraints).
+  /// @return Complex solution vector V containing node voltages and auxiliary source currents.
+  static std::shared_ptr<arma::cx_vec> solveVoltages(const std::shared_ptr<arma::cx_mat> &Y,
+                                                     const std::shared_ptr<arma::cx_vec> &J);
+
 private:
 };
 }; // namespace ocira::core
