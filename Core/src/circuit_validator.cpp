@@ -112,7 +112,6 @@ void CircuitValidator::_validateSimulationModeCompatibility(const Circuit &circu
       case ComponentType::AC_CURRENT_SOURCE:
       case ComponentType::AC_VOLTAGE_SOURCE:
       case ComponentType::CAPACITOR:
-      case ComponentType::IMPEDANCE:
       case ComponentType::INDUCTOR:
       case ComponentType::UNDEFINED: {
         result.isValid = false;
