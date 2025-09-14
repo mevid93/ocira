@@ -1,8 +1,8 @@
 //==============================================================================
-// File:        test_capacitor.cpp
+// File:        test_inductor.cpp
 // Author:      Martin Vidjeskog
-// Created:     2025-09-11
-// Description: Unit tests for Capacitor class in OCIRA core library.
+// Created:     2025-09-14
+// Description: Unit tests for Inductor class in OCIRA core library.
 // License:     GNU General Public License v3.0
 //==============================================================================
 //
@@ -23,55 +23,55 @@
 //
 //==============================================================================
 // Notes:
-// - Tests cover Capacitor class.
-// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=capacitor.*
+// - Tests cover Inductor class.
+// - Run with: ctest or ./core_tests or ./core_tests --gtest_filter=inductor.*
 //==============================================================================
 
-#include "capacitor.hpp"
 #include "component.hpp"
+#include "inductor.hpp"
 #include <gtest/gtest.h>
 #include <memory>
 
 using namespace ocira::core;
 using namespace ocira::core::components;
 
-/// @brief Test Capacitor class constructor.
-TEST(capacitor, constructor_works) {
-  // Create new Capacitor object.
-  Capacitor capacitor(1, 5.0f);
+/// @brief Test Inductor class constructor.
+TEST(inductor, constructor_works) {
+  // Create new Inductor object.
+  Inductor inductor(1, 5.0f);
   // Expect equality.
-  EXPECT_EQ(capacitor.getId(), 1);
-  EXPECT_FLOAT_EQ(capacitor.getCapacitance(), 5.0f);
+  EXPECT_EQ(inductor.getId(), 1);
+  EXPECT_FLOAT_EQ(inductor.getInductance(), 5.0f);
 }
 
-/// @brief Test capacitance setter.
-TEST(capacitor, set_capacitance) {
-  // Create new Capacitor object.
-  Capacitor capacitor(1, 5.0);
-  // Set new capacitance.
-  capacitor.setCapacitance(10.0f);
+/// @brief Test inductance setter.
+TEST(inductor, set_inductance) {
+  // Create new Inductor object.
+  Inductor inductor(1, 5.0);
+  // Set new inductor.
+  inductor.setInductance(10.0f);
   // Expect equality.
-  EXPECT_FLOAT_EQ(capacitor.getCapacitance(), 10.0f);
+  EXPECT_FLOAT_EQ(inductor.getInductance(), 10.0f);
 }
 
-/// @brief Test get imendance.
-TEST(capacitor, get_impedance) {
-  // Create new Capacitor object.
-  Capacitor capacitor(1, 5.0);
+/// @brief Test get impedance.
+TEST(inductor, get_impedance) {
+  // Create new Inductor object.
+  Inductor inductor(1, 5.0);
   // Get impedance.
-  auto impedance = capacitor.getImpedance(50);
+  auto impedance = inductor.getImpedance(50);
   // Expect equality.
   EXPECT_FLOAT_EQ(impedance.real(), 0.0f);
-  EXPECT_FLOAT_EQ(impedance.imag(), -0.00063661975f);
+  EXPECT_FLOAT_EQ(impedance.imag(), 1570.7964f);
 }
 
 /// @brief Test get admittance.
-TEST(capacitor, get_admittance) {
-  // Create new Capacitor object.
-  Capacitor capacitor(1, 5.0);
+TEST(inductor, get_admittance) {
+  // Create new Inductor object.
+  Inductor inductor(1, 5.0);
   // Get admittance.
-  auto admittance = capacitor.getAdmittance(50);
+  auto admittance = inductor.getAdmittance(50);
   // Expect equality.
   EXPECT_FLOAT_EQ(admittance.real(), 0.0f);
-  EXPECT_FLOAT_EQ(admittance.imag(), 1570.7964f);
+  EXPECT_FLOAT_EQ(admittance.imag(), -0.00063661975f);
 }
