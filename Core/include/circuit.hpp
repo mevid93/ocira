@@ -86,10 +86,22 @@ public:
   /// @return Simulation mode.
   SimulationMode getSimulationMode() const;
 
+  /// @brief Sets the global frequency for circuit.
+  /// If circuit simulation mode is DC, the parameter is ignored and value 0 is used.
+  /// Only positive frequencies are allowed. Is parameter is negative, it will automatically be
+  /// converted to positive value.
+  /// @param frequency new frequency for circuit.
+  void setFrequency(float frequency) noexcept;
+
+  /// @brief Gets the global frequency of circuit.
+  /// @return circuit frequency.
+  float getFrequency() const noexcept;
+
 private:
   std::vector<std::shared_ptr<components::Bus>> m_buses;
   std::vector<std::shared_ptr<components::Component>> m_components;
   SimulationMode m_simulationMode;
+  float m_frequency;
 };
 } // namespace ocira::core
 

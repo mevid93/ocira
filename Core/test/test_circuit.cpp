@@ -42,6 +42,7 @@ TEST(circuit, constructor_works) {
   Circuit circuit;
   // Verify results.
   EXPECT_EQ(circuit.getSimulationMode(), SimulationMode::DC);
+  EXPECT_FLOAT_EQ(circuit.getFrequency(), 0.0f);
 }
 
 /// @brief Test Circuit class constructor that takes simulation mode as parameter.
@@ -50,6 +51,7 @@ TEST(circuit, constructor_works_with_simulation_mode) {
   Circuit circuit(SimulationMode::AC);
   // Verify results.
   EXPECT_EQ(circuit.getSimulationMode(), SimulationMode::AC);
+  EXPECT_FLOAT_EQ(circuit.getFrequency(), 50.0f);
 }
 
 /// @brief Test setting circuit components.
@@ -80,4 +82,24 @@ TEST(circuit, set_buses) {
   // Verify that operation was succesful.
   EXPECT_EQ(circuit.getBuses().size(), 2);
   EXPECT_EQ(circuit.getBuses().at(1)->getId(), 2);
+}
+
+/// @brief Test frequency setter. Set new frequency for AC simulation.
+TEST(circuit, set_frequency_ac) {
+  // Create new circuit.
+  Circuit circuit(SimulationMode::AC);
+  // Set new frequency.
+  circuit.setFrequency(60.0f);
+  // Verify results.
+  EXPECT_FLOAT_EQ(circuit.getFrequency(), 60.0f);
+}
+
+/// @brief Test frequency setter. Set frequency for DC simulation.
+TEST(circuit, set_frequency_dc) {
+  // Create new circuit.
+  Circuit circuit(SimulationMode::DC);
+  // Set new frequency.
+  circuit.setFrequency(60.0f);
+  // Verify results.
+  EXPECT_FLOAT_EQ(circuit.getFrequency(), 0.0f);
 }

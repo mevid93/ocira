@@ -34,14 +34,17 @@
 #include "circuit.hpp"
 #include "bus.hpp"
 #include "component.hpp"
+#include <cmath>
 
 using namespace ocira::core::components;
 
 namespace ocira::core {
 
-Circuit::Circuit() : m_simulationMode(SimulationMode::DC) {}
+Circuit::Circuit() : m_simulationMode(SimulationMode::DC) { this->m_frequency = 0; }
 
-Circuit::Circuit(SimulationMode mode) : m_simulationMode(mode) {}
+Circuit::Circuit(SimulationMode mode) : m_simulationMode(mode) {
+  this->m_frequency = mode == SimulationMode::DC ? 0.0f : 50.0f;
+}
 
 const std::vector<std::shared_ptr<Component>> &Circuit::getComponents() const {
   return this->m_components;
@@ -55,8 +58,20 @@ void Circuit::setComponents(std::vector<std::shared_ptr<Component>> components) 
   this->m_components = components;
 }
 
-void Circuit::setSimulationMode(SimulationMode mode) { this->m_simulationMode = mode; }
+void Circuit::setSimulationMode(SimulationMode mode) {
+  if (this->m_simulationMode != mode) {
+    this->m_frequency = mode == SimulationMode::DC ? 0.0f : 50.0f;
+  }
+
+  this->m_simulationMode = mode;
+}
 
 SimulationMode Circuit::getSimulationMode() const { return this->m_simulationMode; }
+
+void Circuit::setFrequency(float frequency) noexcept {
+  this->m_frequency = this->m_simulationMode == SimulationMode::DC ? 0.0f : std::abs(frequency);
+}
+
+float Circuit::getFrequency() const noexcept { return this->m_frequency; }
 
 } // namespace ocira::core
