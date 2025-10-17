@@ -83,3 +83,31 @@ TEST(circuit_calculator, example_circuit_2) {
   EXPECT_FLOAT_EQ((*solution_vector)(3).real(), 2.6209679f);
   EXPECT_FLOAT_EQ((*solution_vector)(4).real(), 0.057258062f); // This is current, not voltage.
 }
+
+// Test circuit transformer for example circuit 3.
+TEST(circuit_calculator, example_circuit_3) {
+  // Get example circuit.
+  const auto circuit = ExampleCircuitGenerator::getExampleCircuit3();
+
+  // Get conductance matrix, current vector, and bus mappings.
+  CircuitTransformer circuitTransformer(circuit);
+  std::shared_ptr<arma::cx_mat> yMatrix = circuitTransformer.getAdmittanceMatrix();
+  std::shared_ptr<arma::cx_vec> iVector = circuitTransformer.getCurrentVector();
+
+  // Peform calculation.
+  std::shared_ptr<arma::cx_vec> solution_vector =
+      CircuitCalculator::solveVoltages(yMatrix, iVector);
+
+  // Verify results.
+  EXPECT_EQ(solution_vector->n_rows, 4);
+  EXPECT_EQ(solution_vector->n_cols, 1);
+
+  EXPECT_FLOAT_EQ((*solution_vector)(0).real(), 1.0f);
+  EXPECT_NEAR((*solution_vector)(0).imag(), 0.0f, 1e-15);
+  EXPECT_FLOAT_EQ((*solution_vector)(1).real(), 1.0976408f);
+  EXPECT_FLOAT_EQ((*solution_vector)(1).imag(), -0.034033757f);
+  EXPECT_FLOAT_EQ((*solution_vector)(2).real(), 0.10833281f);
+  EXPECT_FLOAT_EQ((*solution_vector)(2).imag(), 0.31080028f);
+  EXPECT_FLOAT_EQ((*solution_vector)(3).real(), -0.10833281f); // This is current, not voltage.
+  EXPECT_FLOAT_EQ((*solution_vector)(3).imag(), -0.31080028f); // This is current, not voltage.
+}

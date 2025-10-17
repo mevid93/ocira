@@ -63,13 +63,23 @@ public:
 
   /// @brief Generates a simple example circuit.
   /// The circuit contains:
-  /// - A voltage source
+  /// - A DC voltage source
   /// - Two DC current sources
   /// - Seven resistors
   /// Circuit is from Piirianalyysi 1 book (ISBN 978-952-92-8720-8, page 97).
   /// Useful for basic validation and simulation tests.
   /// @return Shared pointer to the generated Circuit instance.
   static std::shared_ptr<ocira::core::Circuit> getExampleCircuit2();
+
+  /// @brief Generates a simple example circuit.
+  /// The circuit contains:
+  /// - An AC voltage source
+  /// - An inductor
+  /// - A capacitor
+  /// - A resistor
+  /// Useful for basic validation and simulation tests.
+  /// @return Shared pointer to the generated Circuit instance.
+  static std::shared_ptr<ocira::core::Circuit> getExampleCircuit3();
 };
 } // namespace ocira::core::test::helpers
 

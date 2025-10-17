@@ -64,6 +64,17 @@ TEST(circuit_validator, example_circuit_2) {
   EXPECT_TRUE(result.errors.empty());
 }
 
+/// @brief Test CircuitValidator with example circuit 3.
+TEST(circuit_validator, example_circuit_3) {
+  // Get example circuit 3.
+  auto circuit = ExampleCircuitGenerator::getExampleCircuit3();
+  // Validate the circuit.
+  ValidationResult result = CircuitValidator::isValidCircuit(*circuit);
+  // Verify results.
+  EXPECT_TRUE(result.isValid);
+  EXPECT_TRUE(result.errors.empty());
+}
+
 /// @brief Test validation for circuit that has unconnected buses.
 TEST(circuit_validator, unconnected_buses) {
   // Create circuit.

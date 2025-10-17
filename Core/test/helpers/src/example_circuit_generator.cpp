@@ -33,13 +33,16 @@
 //==============================================================================
 
 #include "example_circuit_generator.hpp"
+#include "ac_voltage_source.hpp"
 #include "bus.hpp"
+#include "capacitor.hpp"
 #include "circuit.hpp"
 #include "component.hpp"
 #include "connection_manager.hpp"
 #include "dc_current_source.hpp"
 #include "dc_voltage_source.hpp"
 #include "ground.hpp"
+#include "inductor.hpp"
 #include "resistor.hpp"
 #include <vector>
 
@@ -183,4 +186,59 @@ std::shared_ptr<Circuit> ExampleCircuitGenerator::getExampleCircuit2() {
 
   return circuit;
 }
+
+std::shared_ptr<Circuit> ExampleCircuitGenerator::getExampleCircuit3() {
+  // Create all the components and buses.
+  std::shared_ptr<Circuit> circuit = std::make_shared<Circuit>(SimulationMode::AC);
+  std::shared_ptr<ACVoltageSource> acVoltageSrc1 = std::make_shared<ACVoltageSource>(1, 1, 0);
+  std::shared_ptr<Inductor> inductor1 = std::make_shared<Inductor>(2, 1e-3f);
+  std::shared_ptr<Capacitor> capacitor1 = std::make_shared<Capacitor>(3, 1e-3f);
+  std::shared_ptr<Resistor> resistor1 = std::make_shared<Resistor>(4, 1);
+  std::shared_ptr<Ground> ground = std::make_shared<Ground>(5);
+  std::shared_ptr<Bus> bus1 = std::make_shared<Bus>(1);
+  std::shared_ptr<Bus> bus2 = std::make_shared<Bus>(2);
+  std::shared_ptr<Bus> bus3 = std::make_shared<Bus>(3);
+  std::shared_ptr<Bus> bus4 = std::make_shared<Bus>(4);
+
+  // Connect components and buses.
+  ConnectionManager::connectBusAndComponent(
+      bus1, std::static_pointer_cast<Component>(acVoltageSrc1), TerminalRole::NEGATIVE);
+  ConnectionManager::connectBusAndComponent(
+      bus2, std::static_pointer_cast<Component>(acVoltageSrc1), TerminalRole::POSITIVE);
+  ConnectionManager::connectBusAndComponent(bus2, std::static_pointer_cast<Component>(inductor1),
+                                            TerminalRole::NEGATIVE);
+  ConnectionManager::connectBusAndComponent(bus3, std::static_pointer_cast<Component>(inductor1),
+                                            TerminalRole::POSITIVE);
+  ConnectionManager::connectBusAndComponent(bus3, std::static_pointer_cast<Component>(capacitor1),
+                                            TerminalRole::NEGATIVE);
+  ConnectionManager::connectBusAndComponent(bus4, std::static_pointer_cast<Component>(capacitor1),
+                                            TerminalRole::POSITIVE);
+  ConnectionManager::connectBusAndComponent(bus4, std::static_pointer_cast<Component>(resistor1),
+                                            TerminalRole::NEGATIVE);
+  ConnectionManager::connectBusAndComponent(bus1, std::static_pointer_cast<Component>(resistor1),
+                                            TerminalRole::POSITIVE);
+  ConnectionManager::connectBusAndComponent(bus1, std::static_pointer_cast<Component>(ground),
+                                            TerminalRole::NEGATIVE);
+
+  // Group components and buses to two vectors.
+  std::vector<std::shared_ptr<Component>> components;
+  components.push_back(acVoltageSrc1);
+  components.push_back(inductor1);
+  components.push_back(capacitor1);
+  components.push_back(resistor1);
+  components.push_back(ground);
+
+  std::vector<std::shared_ptr<Bus>> buses;
+  buses.push_back(bus1);
+  buses.push_back(bus2);
+  buses.push_back(bus3);
+  buses.push_back(bus4);
+
+  // Create circuit.
+  circuit->setBuses(buses);
+  circuit->setComponents(components);
+
+  return circuit;
+}
+
 } // namespace ocira::core::test::helpers

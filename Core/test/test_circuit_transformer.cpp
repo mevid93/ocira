@@ -99,3 +99,38 @@ TEST(circuit_transformer, example_circuit_2) {
   EXPECT_EQ(bNumberMap.size(), 5);
   EXPECT_EQ(bIdMap.size(), 5);
 }
+
+// Test circuit transformer for example circuit 3.
+TEST(circuit_transformer, example_circuit_3) {
+  // Get example circuit.
+  const auto circuit = ExampleCircuitGenerator::getExampleCircuit3();
+
+  // Get conductance matrix, current vector, and bus mappings.
+  CircuitTransformer circuitTransformer(circuit);
+  std::shared_ptr<arma::cx_mat> yMatrix = circuitTransformer.getAdmittanceMatrix();
+  std::shared_ptr<arma::cx_vec> iVector = circuitTransformer.getCurrentVector();
+  std::unordered_map<BusNumber, BusId> bNumberMap = circuitTransformer.getBusNumberMap();
+  std::unordered_map<BusId, BusNumber> bIdMap = circuitTransformer.getBusIdMap();
+
+  // Verify results.
+  EXPECT_EQ(yMatrix->n_rows, 4);
+  EXPECT_EQ(yMatrix->n_cols, 4);
+  EXPECT_FLOAT_EQ((*yMatrix)(3, 0).real(), 1);
+  EXPECT_FLOAT_EQ((*yMatrix)(3, 1).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(3, 2).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(3, 3).real(), 0);
+
+  EXPECT_FLOAT_EQ((*yMatrix)(0, 3).real(), 1);
+  EXPECT_FLOAT_EQ((*yMatrix)(1, 3).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(2, 3).real(), 0);
+  EXPECT_FLOAT_EQ((*yMatrix)(3, 3).real(), 0);
+
+  EXPECT_EQ(iVector->n_elem, 4);
+  EXPECT_FLOAT_EQ((*iVector)(0).real(), 0.0f);
+  EXPECT_FLOAT_EQ((*iVector)(1).real(), 0.0f);
+  EXPECT_FLOAT_EQ((*iVector)(2).real(), 0.0f);
+  EXPECT_FLOAT_EQ((*iVector)(3).real(), 1.0f);
+
+  EXPECT_EQ(bNumberMap.size(), 4);
+  EXPECT_EQ(bIdMap.size(), 4);
+}

@@ -44,6 +44,10 @@ namespace ocira::core::components {
 class DCCurrentSource;
 class DCVoltageSource;
 class Resistor;
+class Capacitor;
+class Inductor;
+class ACCurrentSource;
+class ACVoltageSource;
 
 } // namespace ocira::core::components
 
@@ -118,6 +122,29 @@ private:
   /// voltage source. This index corresponds to the additional row and column in the MNA matrix used
   /// to enforce the voltage constraint.
   void _transformDCVoltageSource(std::shared_ptr<components::DCVoltageSource> dcVoltageSrc,
+                                 uint32_t voltageSourceIndex);
+
+  /// @brief Adds the contribution of a capacitor to the admittance matrix.
+  /// @param capacitor Shared pointer to the capacitor component.
+  /// @param frequency Circuit frequency.
+  void _transformCapacitor(std::shared_ptr<components::Capacitor> capacitor, float frequency);
+
+  /// @brief Adds the contribution of an inductor to the admittance matrix.
+  /// @param inductor Shared pointer to the inductor component.
+  /// @param frequency Circuit frequency.
+  void _transformInductor(std::shared_ptr<components::Inductor> inductor, float frequency);
+
+  /// @brief Adds the contribution of an AC current source to the current vector.
+  /// @param acCurrentSrc Shared pointer to the AC current source component.
+  void _transformACCurrentSource(std::shared_ptr<components::ACCurrentSource> acCurrentSrc);
+
+  /// @brief Adds the contribution of an AC voltage source to the admittance matrix and current
+  /// vector.
+  /// @param acVoltageSrc Shared pointer to the AC voltage source component.
+  /// @param voltageSourceIndex Index of the auxiliary current variable introduced for this AC
+  /// voltage source. This index corresponds to the additional row and column in the MNA matrix used
+  /// to enforce the voltage constraint.
+  void _transformACVoltageSource(std::shared_ptr<components::ACVoltageSource> acVoltageSrc,
                                  uint32_t voltageSourceIndex);
 };
 }; // namespace ocira::core
